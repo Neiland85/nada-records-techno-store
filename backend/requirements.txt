@@ -1,10 +1,10 @@
 # Core FastAPI and server
-fastapi==0.104.1
+fastapi==0.105.0
 uvicorn[standard]==0.24.0
-python-multipart==0.0.18
+python-multipart==0.0.18  # Security fix for DoS via malformed multipart/form-data boundary
 
 # Database
-sqlalchemy==2.0.23
+sqlalchemy==2.0.25
 asyncpg==0.29.0
 alembic==1.13.1
 

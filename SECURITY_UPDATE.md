@@ -1,6 +1,15 @@
-# Security Update Migration
+# Security Update Migration - Latest Updates
 
-## Changes Made
+## Recent Critical Fix (Alert #5)
+
+### python-multipart DoS Vulnerability Fix
+- **Date**: August 6, 2025
+- **Alert**: Dependabot Alert #5 - DoS via malformed multipart/form-data boundary
+- **Severity**: High
+- **Fixed Version**: python-multipart==0.0.18
+- **Impact**: Prevents CPU exhaustion attacks via malicious form data parsing
+
+## Previous Security Changes
 
 ### 1. JWT Library Migration
 - **Replaced**: `python-jose[cryptography]==3.3.0`
