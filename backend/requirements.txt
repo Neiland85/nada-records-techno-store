@@ -1,11 +1,15 @@
 # Core FastAPI and server
 fastapi==0.105.0
 uvicorn[standard]==0.24.0
+     security/fix-multipart-dos-alert
+python-multipart==0.0.18  # Security fix for DoS via malformed multipart/form-data boundary
+
      security/fix-dependabot-alerts
 python-multipart==0.0.9
 
 python-multipart==0.0.18
        develop
+     develop
 
 # Database
 sqlalchemy==2.0.25
