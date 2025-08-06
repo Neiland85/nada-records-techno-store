@@ -16,7 +16,7 @@
   - Content-Type Header ReDoS vulnerability
 
 ### 3. Pillow Security Update
-- **Updated**: `Pillow` from `10.1.0` to `10.3.0`
+- **Updated**: `Pillow` from `10.2.0` to `10.3.0`
 - **Reason**: Buffer overflow vulnerability (High severity)
 
 ### 4. Sentry SDK Update
