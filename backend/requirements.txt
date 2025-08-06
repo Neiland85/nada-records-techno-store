@@ -1,7 +1,7 @@
 # Core FastAPI and server
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-python-multipart==0.0.6
+python-multipart==0.0.18
 
 # Database
 sqlalchemy==2.0.23
@@ -49,7 +49,7 @@ httpx==0.25.2  # For testing async endpoints
 factory-boy==3.3.0  # Test data generation
 
 # Development tools
-black==23.11.0
+black==24.3.0
 flake8==6.1.0
 mypy==1.7.1
 pre-commit==3.5.0
@@ -59,6 +59,10 @@ python-json-logger==2.0.7
 sentry-sdk[fastapi]==1.45.0
 
 # Email
+     develop
+
+python-multipart==0.0.18
+     main
 emails==0.6
 
 # Additional utilities
@@ -66,7 +70,11 @@ python-dateutil==2.8.2
 pytz==2023.3
 httpx==0.25.2
 aiofiles==23.2.1  # Async file operations
+     develop
 Pillow==10.2.0  # Image processing for album covers
+
+Pillow==10.3.0  # Image processing for album covers
+     main
 python-magic==0.4.27  # File type detection
 validators==0.22.0  # URL and email validation
 
