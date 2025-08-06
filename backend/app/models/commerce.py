@@ -101,7 +101,11 @@ class License(BaseModel):
     
     # Availability
     is_available = Column(Boolean, default=True, nullable=False)
+    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
     available_quantity = Column(Integer, nullable=True)  # None = unlimited
+
+    available_quantity = Column(Integer, nullable=True)
+      develop
     sold_quantity = Column(Integer, default=0, nullable=False)
     
     # Relationships
@@ -322,4 +326,7 @@ class DistributionQueue(BaseModel):
         Index("idx_distribution_status", "status"),
         Index("idx_distribution_retry", "status", "next_retry_at"),
         UniqueConstraint("album_id", "platform", name="uq_album_platform"),
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
     )
+
+     develop

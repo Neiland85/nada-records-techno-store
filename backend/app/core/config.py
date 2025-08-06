@@ -203,4 +203,8 @@ def get_settings() -> Settings:
 
 
 # Create settings instance
+    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
 settings = get_settings()
+
+settings = get_settings()
+     develop
