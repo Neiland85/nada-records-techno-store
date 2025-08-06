@@ -39,7 +39,6 @@ librosa==0.10.1  # Advanced audio analysis
 pydub==0.25.1  # Audio manipulation
 
 # API documentation
-python-multipart==0.0.6
 
 # Testing
 pytest==7.4.3
