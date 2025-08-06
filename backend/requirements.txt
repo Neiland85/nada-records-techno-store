@@ -1,0 +1,91 @@
+# Core FastAPI and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+asyncpg==0.29.0
+alembic==1.12.1
+
+# Data validation and settings
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# Authentication and security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.1.1
+
+# Task queue and caching
+celery==5.3.4
+redis==5.0.1
+flower==2.0.1  # Celery monitoring
+
+# Payment processing
+stripe==7.5.0
+
+# Cloud storage
+boto3==1.29.7
+botocore==1.32.7
+
+# Audio processing
+ffmpeg-python==0.2.0
+mutagen==1.47.0
+numpy==1.26.2
+scipy==1.11.4
+librosa==0.10.1  # Advanced audio analysis
+pydub==0.25.1  # Audio manipulation
+
+# API documentation
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+httpx==0.25.2  # For testing async endpoints
+factory-boy==3.3.0  # Test data generation
+
+# Development tools
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+pre-commit==3.5.0
+
+# Monitoring and logging
+python-json-logger==2.0.7
+sentry-sdk[fastapi]==1.38.0
+
+# Email
+python-multipart==0.0.6
+emails==0.6
+
+# Additional utilities
+python-dateutil==2.8.2
+pytz==2023.3
+httpx==0.25.2
+aiofiles==23.2.1  # Async file operations
+Pillow==10.1.0  # Image processing for album covers
+python-magic==0.4.27  # File type detection
+validators==0.22.0  # URL and email validation
+
+# Rate limiting
+slowapi==0.1.9
+
+# Background tasks
+apscheduler==3.10.4  # For scheduled tasks
+
+# API versioning and documentation
+fastapi-versioning==0.10.0
+
+# Security headers
+secure==0.3.0
+
+# Database connection pooling
+asyncpg-stubs==0.29.0
+
+# Type checking
+types-redis==4.6.0.11
+types-requests==2.31.0.10
+types-python-dateutil==2.8.19.14
