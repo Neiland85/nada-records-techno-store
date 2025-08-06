@@ -1,0 +1,1 @@
+"""FastAPI Music Store Backend Application."""
