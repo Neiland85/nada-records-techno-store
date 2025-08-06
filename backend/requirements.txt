@@ -6,17 +6,17 @@ python-multipart==0.0.18
 # Database
 sqlalchemy==2.0.23
 asyncpg==0.29.0
-alembic==1.12.1
+alembic==1.13.1
 
 # Data validation and settings
-pydantic==2.5.0
+pydantic==2.5.2
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
 
 # Authentication and security
-python-jose[cryptography]==3.3.0
+PyJWT[crypto]==2.8.0
 passlib[bcrypt]==1.7.4
-bcrypt==4.1.1
+bcrypt==4.2.0
 
 # Task queue and caching
 celery==5.3.4
@@ -39,6 +39,7 @@ librosa==0.10.1  # Advanced audio analysis
 pydub==0.25.1  # Audio manipulation
 
 # API documentation
+python-multipart==0.0.6
 
 # Testing
 pytest==7.4.3
@@ -55,10 +56,13 @@ pre-commit==3.5.0
 
 # Monitoring and logging
 python-json-logger==2.0.7
-sentry-sdk[fastapi]==1.38.0
+sentry-sdk[fastapi]==1.45.0
 
 # Email
+     develop
+
 python-multipart==0.0.18
+     main
 emails==0.6
 
 # Additional utilities
@@ -66,7 +70,11 @@ python-dateutil==2.8.2
 pytz==2023.3
 httpx==0.25.2
 aiofiles==23.2.1  # Async file operations
+     develop
+Pillow==10.2.0  # Image processing for album covers
+
 Pillow==10.3.0  # Image processing for album covers
+     main
 python-magic==0.4.27  # File type detection
 validators==0.22.0  # URL and email validation
 
