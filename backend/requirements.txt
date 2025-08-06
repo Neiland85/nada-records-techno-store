@@ -1,10 +1,14 @@
 # Core FastAPI and server
-fastapi==0.104.1
+fastapi==0.105.0
 uvicorn[standard]==0.24.0
+     security/fix-dependabot-alerts
+python-multipart==0.0.9
+
 python-multipart==0.0.18
+       develop
 
 # Database
-sqlalchemy==2.0.23
+sqlalchemy==2.0.25
 asyncpg==0.29.0
 alembic==1.13.1
 
@@ -38,14 +42,11 @@ scipy==1.11.4
 librosa==0.10.1  # Advanced audio analysis
 pydub==0.25.1  # Audio manipulation
 
-# API documentation
-python-multipart==0.0.6
-
 # Testing
-pytest==7.4.3
-pytest-asyncio==0.21.1
+pytest==7.4.4
+pytest-asyncio==0.23.2
 pytest-cov==4.1.0
-httpx==0.25.2  # For testing async endpoints
+httpx==0.26.0  # For testing async endpoints
 factory-boy==3.3.0  # Test data generation
 
 # Development tools
@@ -56,7 +57,7 @@ pre-commit==3.5.0
 
 # Monitoring and logging
 python-json-logger==2.0.7
-sentry-sdk[fastapi]==1.45.0
+sentry-sdk[fastapi]==1.47.0
 
 # Email
      develop
@@ -68,13 +69,17 @@ emails==0.6
 # Additional utilities
 python-dateutil==2.8.2
 pytz==2023.3
-httpx==0.25.2
+httpx==0.26.0
 aiofiles==23.2.1  # Async file operations
+    security/fix-dependabot-alerts
+Pillow==10.3.0  # Image processing for album covers
+
      develop
 Pillow==10.2.0  # Image processing for album covers
 
 Pillow==10.3.0  # Image processing for album covers
      main
+     develop
 python-magic==0.4.27  # File type detection
 validators==0.22.0  # URL and email validation
 
