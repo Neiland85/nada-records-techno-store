@@ -104,4 +104,8 @@ class SoftDeleteMixin:
     
     def soft_delete(self) -> None:
         """Mark record as deleted."""
+    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+        self.deleted_at = datetime.utcnow()
+
         self.deleted_at = datetime.now(datetime.timezone.utc)
+     develop

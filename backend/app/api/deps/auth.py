@@ -16,7 +16,9 @@ from app.core.config import settings
 from app.models import User, UserSession
 from app.models.base import AsyncSessionLocal
 
-# Error messages
+    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+
+  # Error messages
 CREDENTIALS_ERROR = "Could not validate credentials"
 NOT_ENOUGH_PERMISSIONS = "Not enough permissions"
 OPERATION_NOT_PERMITTED = "Operation not permitted"
@@ -25,6 +27,7 @@ EMAIL_NOT_VERIFIED = "Email not verified"
 ARTIST_ACCOUNT_REQUIRED = "Artist account required"
 RATE_LIMIT_EXCEEDED = "Rate limit exceeded"
 
+     develop
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -66,7 +69,11 @@ class AuthService:
         Returns:
             Encoded JWT token
         """
-        if expires_delta:
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            expire = datetime.utcnow() + expires_delta
+        else:
+            expire = datetime.utcnow() + settings.jwt_access_token_expire_timedelta
+
             expire = datetime.now(datetime.timezone.utc) + expires_delta
         else:
             expire = datetime.now(datetime.timezone.utc) + settings.jwt_access_token_expire_timedelta
@@ -78,12 +85,16 @@ class AuthService:
             expire = datetime.now(timezone.utc) + expires_delta
         else:
             expire = datetime.now(timezone.utc) + settings.jwt_access_token_expire_timedelta
+       develop
         
         to_encode = {
             "exp": expire,
             "sub": str(subject),
             "type": "access",
-            "iat": datetime.now(timezone.utc),
+       cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            "iat": datetime.utcnow(),
+      
+          develop
         }
         
         if additional_claims:
@@ -112,15 +123,24 @@ class AuthService:
             Encoded JWT refresh token
         """
         if expires_delta:
+      ursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            expire = datetime.utcnow() + expires_delta
+        else:
+            expire = datetime.utcnow() + settings.jwt_refresh_token_expire_timedelta
+
             expire = datetime.now(datetime.timezone.utc) + expires_delta
         else:
             expire = datetime.now(datetime.timezone.utc) + settings.jwt_refresh_token_expire_timedelta
+       develop
         
         to_encode = {
             "exp": expire,
             "sub": str(subject),
             "type": "refresh",
-            "iat": datetime.now(datetime.timezone.utc),
+       cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            "iat": datetime.utcnow(),
+    
+          develop
         }
         
         encoded_jwt = jwt.encode(
@@ -133,7 +153,10 @@ class AuthService:
     @staticmethod
     def create_email_verification_token(email: str) -> str:
         """Create email verification token."""
-        expire = datetime.now(datetime.timezone.utc) + settings.jwt_email_verification_expire_timedelta
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+        expire = datetime.utcnow() + settings.jwt_email_verification_expire_timedelta
+
+     develop
         to_encode = {
             "exp": expire,
             "sub": email,
@@ -148,7 +171,8 @@ class AuthService:
     @staticmethod
     def create_password_reset_token(email: str) -> str:
         """Create password reset token."""
-        expire = datetime.now(datetime.timezone.utc) + settings.jwt_password_reset_expire_timedelta
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+     develop
         to_encode = {
             "exp": expire,
             "sub": email,
@@ -184,7 +208,10 @@ class AuthService:
         except JWTError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=CREDENTIALS_ERROR,
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+                detail="Could not validate credentials",
+    
+              develop
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
@@ -218,7 +245,11 @@ async def get_current_user(
     """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+        detail="Could not validate credentials",
+
         detail=CREDENTIALS_ERROR,
+       develop
         headers={"WWW-Authenticate": "Bearer"},
     )
     
@@ -266,10 +297,12 @@ async def get_current_active_user(
     Raises:
         HTTPException: If user is inactive
     """
-    if not current_user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+    
+          cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            detail="Inactive user",
+
             detail=INACTIVE_USER,
+       develop
         )
     return current_user
 
@@ -291,8 +324,11 @@ async def get_current_verified_user(
     """
     if not current_user.is_verified:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            detail="Email not verified",
+
             detail=EMAIL_NOT_VERIFIED,
+    develop
         )
     return current_user
 
@@ -315,7 +351,10 @@ async def get_current_admin_user(
     if not current_user.is_admin:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=NOT_ENOUGH_PERMISSIONS,
+    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            detail="Not enough permissions",
+    
+          develop
         )
     return current_user
 
@@ -338,7 +377,10 @@ async def get_current_artist_user(
     if not current_user.is_artist:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=ARTIST_ACCOUNT_REQUIRED,
+    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+            detail="Artist account required",
+
+     develop
         )
     return current_user
 
@@ -358,7 +400,11 @@ class RoleChecker:
         if user.role not in self.allowed_roles and not user.is_superuser:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+                detail="Operation not permitted",
+
                 detail=OPERATION_NOT_PERMITTED,
+       develop
             )
 
 
@@ -397,7 +443,11 @@ class RateLimiter:
     
     def is_allowed(self, key: str, max_requests: int, window_seconds: int) -> bool:
         """Check if request is allowed within rate limit."""
+       cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+        now = datetime.utcnow()
+
         now = datetime.now(datetime.timezone.utc)
+       develop
         minute_ago = now - timedelta(seconds=window_seconds)
         
         # Clean old requests
@@ -441,9 +491,16 @@ def rate_limit(max_requests: int = 60, window_seconds: int = 60):
             if not rate_limiter.is_allowed(key, max_requests, window_seconds):
                 raise HTTPException(
                     status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-                    detail=RATE_LIMIT_EXCEEDED,
+    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+                    detail="Rate limit exceeded",
+
+     develop
                 )
             
             return await func(*args, **kwargs)
         return wrapper
+     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
     return decorator
+
+    return decorator
+       develop
