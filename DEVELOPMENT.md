@@ -17,4 +17,4 @@ This project is being set up with the following branch strategy:
 - ✅ Development environment configured
 
 ---
-*Setup completed on miércoles, 6 de agosto de 2025, 16:29:58 CEST*
+*Setup complete*
