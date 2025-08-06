@@ -75,7 +75,15 @@ class AuthService:
             "exp": expire,
             "sub": str(subject),
             "type": "access",
-            "iat": datetime.now(datetime.timezone.utc),
+            expire = datetime.now(timezone.utc) + expires_delta
+        else:
+            expire = datetime.now(timezone.utc) + settings.jwt_access_token_expire_timedelta
+        
+        to_encode = {
+            "exp": expire,
+            "sub": str(subject),
+            "type": "access",
+            "iat": datetime.now(timezone.utc),
         }
         
         if additional_claims:
