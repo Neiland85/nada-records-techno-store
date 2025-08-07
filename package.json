@@ -1,0 +1,31 @@
+{
+  "name": "nada-records-techno-store",
+  "version": "1.0.0",
+  "description": "Electronic music store platform with audio streaming and distribution services",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm run start",
+    "lint": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "music",
+    "electronic",
+    "streaming",
+    "fastapi",
+    "nextjs",
+    "typescript",
+    "audio",
+    "techno"
+  ],
+  "author": "Nada Records",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Neiland85/nada-records-techno-store.git"
+  }
+}
