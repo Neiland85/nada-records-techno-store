@@ -1,6 +1,7 @@
 """
 Base model classes and database configuration.
 """
+
 import uuid
 from datetime import datetime
 from typing import Any
@@ -13,7 +14,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import func
 
 from app.core.config import settings
-
 
 # Create async engine
 engine = create_async_engine(
@@ -37,9 +37,9 @@ Base = declarative_base()
 
 class BaseModel(Base):
     """Abstract base model with common fields."""
-    
+
     __abstract__ = True
-    
+
     id = Column(
         UUID(as_uuid=True),
         primary_key=True,
@@ -60,11 +60,11 @@ class BaseModel(Base):
         nullable=False,
         index=True,
     )
-    
+
     def __repr__(self) -> str:
         """String representation of model."""
         return f"<{self.__class__.__name__}(id={self.id})>"
-    
+
     def dict(self) -> dict[str, Any]:
         """Convert model to dictionary."""
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -72,7 +72,7 @@ class BaseModel(Base):
 
 class TimestampMixin:
     """Mixin for models that need timestamp tracking."""
-    
+
     created_at = Column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -90,22 +90,18 @@ class TimestampMixin:
 
 class SoftDeleteMixin:
     """Mixin for models that support soft deletion."""
-    
+
     deleted_at = Column(
         DateTime(timezone=True),
         nullable=True,
         index=True,
     )
-    
+
     @property
     def is_deleted(self) -> bool:
         """Check if record is soft deleted."""
         return self.deleted_at is not None
-    
+
     def soft_delete(self) -> None:
         """Mark record as deleted."""
-    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
-        self.deleted_at = datetime.utcnow()
-
         self.deleted_at = datetime.now(datetime.timezone.utc)
-     develop

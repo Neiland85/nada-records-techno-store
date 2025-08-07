@@ -1,35 +1,36 @@
 """Email configuration and services using SendGrid."""
 
-import os
-from typing import Optional, Dict, Any, List
 import json
 import logging
+import os
 from datetime import datetime
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Content, Email, To
+from typing import Any, Dict, List, Optional
+
 from pydantic_settings import BaseSettings
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Content, Email, Mail, To
 
 logger = logging.getLogger(__name__)
 
 
 class EmailSettings(BaseSettings):
     """Email configuration settings."""
-    
+
     # SendGrid Configuration
     sendgrid_api_key: str = ""
     sendgrid_from_email: str = "noreply@nadarecords.com"
     sendgrid_from_name: str = "Nada Records Techno Store"
-    
+
     # SMTP Fallback Configuration
     smtp_host: str = "smtp.gmail.com"
     smtp_port: int = 587
     smtp_user: str = ""
     smtp_password: str = ""
     email_from_address: str = "noreply@nadarecords.com"
-    
+
     # Email Templates
     email_templates_dir: str = "app/templates/email"
-    
+
     class Config:
         env_file = ".env"
         env_prefix = ""
@@ -41,19 +42,21 @@ email_settings = EmailSettings()
 
 class EmailService:
     """Email service using SendGrid API."""
-    
+
     def __init__(self):
         """Initialize SendGrid client."""
         self.sendgrid_client = None
         if email_settings.sendgrid_api_key:
             try:
-                self.sendgrid_client = SendGridAPIClient(api_key=email_settings.sendgrid_api_key)
+                self.sendgrid_client = SendGridAPIClient(
+                    api_key=email_settings.sendgrid_api_key
+                )
                 logger.info("SendGrid client initialized successfully")
             except Exception as e:
                 logger.error(f"Failed to initialize SendGrid client: {e}")
         else:
             logger.warning("SendGrid API key not provided")
-    
+
     async def send_email(
         self,
         to_email: str,
@@ -62,11 +65,11 @@ class EmailService:
         plain_content: Optional[str] = None,
         from_email: Optional[str] = None,
         from_name: Optional[str] = None,
-        attachments: Optional[list] = None
+        attachments: Optional[list] = None,
     ) -> bool:
         """
         Send email using SendGrid.
-        
+
         Args:
             to_email: Recipient email address
             subject: Email subject
@@ -75,67 +78,69 @@ class EmailService:
             from_email: Sender email (optional, uses default)
             from_name: Sender name (optional, uses default)
             attachments: List of attachments (optional)
-            
+
         Returns:
             bool: True if email sent successfully, False otherwise
         """
         if not self.sendgrid_client:
             logger.error("SendGrid client not initialized")
             return False
-        
+
         try:
             # Set sender information
             sender_email = from_email or email_settings.sendgrid_from_email
             sender_name = from_name or email_settings.sendgrid_from_name
-            
+
             # Create email
             from_email_obj = Email(email=sender_email, name=sender_name)
             to_email_obj = To(email=to_email)
-            
+
             # Create mail object
             mail = Mail(
                 from_email=from_email_obj,
                 to_emails=to_email_obj,
                 subject=subject,
-                html_content=Content("text/html", html_content)
+                html_content=Content("text/html", html_content),
             )
-            
+
             # Add plain text content if provided
             if plain_content:
                 mail.content.append(Content("text/plain", plain_content))
-            
+
             # Add attachments if provided
             if attachments:
                 for attachment in attachments:
                     mail.add_attachment(attachment)
-            
+
             # Send email
             response = self.sendgrid_client.send(mail)
-            
+
             if response.status_code in [200, 201, 202]:
                 logger.info(f"Email sent successfully to {to_email}")
                 return True
             else:
-                logger.error(f"Failed to send email: {response.status_code} - {response.body}")
+                logger.error(
+                    f"Failed to send email: {response.status_code} - {response.body}"
+                )
                 return False
-                
+
         except Exception as e:
             logger.error(f"Error sending email: {e}")
             return False
-    
+
     async def send_welcome_email(self, to_email: str, user_name: str) -> bool:
         """
         Send welcome email to new user.
-        
+
         Args:
             to_email: User's email address
             user_name: User's name
-            
+
         Returns:
             bool: True if email sent successfully
         """
         subject = "¡Bienvenido a Nada Records Techno Store!"
-        
+
         html_content = f"""
         <html>
         <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -185,7 +190,7 @@ class EmailService:
         </body>
         </html>
         """
-        
+
         plain_content = f"""
         ¡Hola {user_name}!
         
@@ -203,37 +208,34 @@ class EmailService:
         
         Nada Records Techno Store
         """
-        
+
         return await self.send_email(
             to_email=to_email,
             subject=subject,
             html_content=html_content,
-            plain_content=plain_content
+            plain_content=plain_content,
         )
-    
+
     async def send_purchase_confirmation(
-        self, 
-        to_email: str, 
-        user_name: str, 
-        order_details: Dict[str, Any]
+        self, to_email: str, user_name: str, order_details: Dict[str, Any]
     ) -> bool:
         """
         Send purchase confirmation email.
-        
+
         Args:
             to_email: User's email address
             user_name: User's name
             order_details: Dictionary with order information
-            
+
         Returns:
             bool: True if email sent successfully
         """
-        order_id = order_details.get('order_id', 'N/A')
-        total_amount = order_details.get('total_amount', 0)
-        items = order_details.get('items', [])
-        
+        order_id = order_details.get("order_id", "N/A")
+        total_amount = order_details.get("total_amount", 0)
+        items = order_details.get("items", [])
+
         subject = f"✅ Confirmación de Compra - Orden #{order_id}"
-        
+
         # Generate items HTML
         items_html = ""
         for item in items:
@@ -244,7 +246,7 @@ class EmailService:
                 <td style="padding: 10px; color: #333; text-align: right;">${item.get('price', 0):.2f}</td>
             </tr>
             """
-        
+
         html_content = f"""
         <html>
         <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -292,28 +294,26 @@ class EmailService:
         </body>
         </html>
         """
-        
+
         return await self.send_email(
-            to_email=to_email,
-            subject=subject,
-            html_content=html_content
+            to_email=to_email, subject=subject, html_content=html_content
         )
-    
+
     async def send_password_reset(self, to_email: str, reset_token: str) -> bool:
         """
         Send password reset email.
-        
+
         Args:
             to_email: User's email address
             reset_token: Password reset token
-            
+
         Returns:
             bool: True if email sent successfully
         """
         subject = "🔐 Restablecer Contraseña - Nada Records"
-        
+
         reset_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/reset-password?token={reset_token}"
-        
+
         html_content = f"""
         <html>
         <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -351,11 +351,9 @@ class EmailService:
         </body>
         </html>
         """
-        
+
         return await self.send_email(
-            to_email=to_email,
-            subject=subject,
-            html_content=html_content
+            to_email=to_email, subject=subject, html_content=html_content
         )
 
 
@@ -364,17 +362,14 @@ email_service = EmailService()
 
 
 async def send_email(
-    to_email: str,
-    subject: str,
-    html_content: str,
-    plain_content: Optional[str] = None
+    to_email: str, subject: str, html_content: str, plain_content: Optional[str] = None
 ) -> bool:
     """Convenience function to send email."""
     return await email_service.send_email(
         to_email=to_email,
         subject=subject,
         html_content=html_content,
-        plain_content=plain_content
+        plain_content=plain_content,
     )
 
 
@@ -384,12 +379,12 @@ async def send_welcome_email(to_email: str, user_name: str) -> bool:
 
 
 async def send_purchase_confirmation(
-    to_email: str, 
-    user_name: str, 
-    order_details: Dict[str, Any]
+    to_email: str, user_name: str, order_details: Dict[str, Any]
 ) -> bool:
     """Convenience function to send purchase confirmation."""
-    return await email_service.send_purchase_confirmation(to_email, user_name, order_details)
+    return await email_service.send_purchase_confirmation(
+        to_email, user_name, order_details
+    )
 
 
 async def send_password_reset(to_email: str, reset_token: str) -> bool:
