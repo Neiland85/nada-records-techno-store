@@ -1,0 +1,35 @@
+# Core FastAPI and server
+fastapi==0.105.0
+uvicorn[standard]==0.24.0
+python-multipart==0.0.18
+
+# Database
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+
+# Data validation and settings
+pydantic==2.5.2
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+
+# Authentication and security
+PyJWT[crypto]==2.8.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.0
+
+# Caching (without Redis for Vercel)
+diskcache==5.6.3
+
+# Email
+sendgrid==6.11.0
+
+# Additional utilities
+python-dateutil==2.8.2
+pytz==2023.3
+validators==0.22.0
+
+# Rate limiting
+slowapi==0.1.9
+
+# Type checking
+types-python-dateutil==2.8.19.14

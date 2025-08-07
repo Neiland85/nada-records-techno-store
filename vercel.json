@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "backend/main.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.11"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/main.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
+    }
+  ],
+  "env": {
+    "PYTHONPATH": "backend",
+    "DEBUG": "false"
+  },
+  "functions": {
+    "backend/main.py": {
+      "runtime": "python3.11",
+      "environment": {
+        "PYTHONPATH": "backend"
+      }
+    }
+  },
+  "outputDirectory": "frontend/.next"
+}

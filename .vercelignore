@@ -1,0 +1,91 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Backend development files
+backend/.env
+backend/.env.local
+backend/.pytest_cache/
+backend/tests/
+backend/scripts/
+backend/alembic/
+backend/htmlcov/
+backend/logs/
+
+# Audio processing dependencies (too large for Vercel)
+backend/audio_files/
+backend/temp_uploads/
+*.wav
+*.flac
+*.mp3
+*.aac
+*.ogg
+
+# Node modules (handled by Vercel)
+node_modules/
+frontend/node_modules/
+
+# Next.js build artifacts
+frontend/.next/
+frontend/out/
+
+# Development files
+.git/
+.gitignore
+.env.example
+.env.local
+.env.development
+.env.test
+
+# Documentation
+README.md
+DEVELOPMENT.md
+SECURITY_*.md
+
+# Docker files
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+.dockerignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Coverage reports
+coverage/
+.coverage
+.nyc_output
+
+# Test files
+**/tests/
+**/*test*
+**/test_*
