@@ -8,7 +8,6 @@ from datetime import datetime
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Content, Email, To
 from pydantic_settings import BaseSettings
-import logging
 
 logger = logging.getLogger(__name__)
 
