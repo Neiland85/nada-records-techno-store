@@ -10,6 +10,10 @@ from sqlalchemy.orm import relationship
 
 from app.models.base import BaseModel, SoftDeleteMixin
 
+# Constants to avoid string duplication
+CASCADE_ALL_DELETE_ORPHAN = "all, delete-orphan"
+PERMISSION_MANAGE_PROFILE = "manage_profile"
+
 
 class UserRole(str, Enum):
     """User role enumeration."""
@@ -63,17 +67,17 @@ class User(BaseModel, SoftDeleteMixin):
         "ArtistProfile",
         back_populates="user",
         uselist=False,
-        cascade="all, delete-orphan"
+        cascade=CASCADE_ALL_DELETE_ORPHAN
     )
     orders = relationship(
         "Order",
         back_populates="user",
-        cascade="all, delete-orphan"
+        cascade=CASCADE_ALL_DELETE_ORPHAN
     )
     sessions = relationship(
         "UserSession",
         back_populates="user",
-        cascade="all, delete-orphan"
+        cascade=CASCADE_ALL_DELETE_ORPHAN
     )
     
     # Indexes
@@ -113,12 +117,12 @@ class User(BaseModel, SoftDeleteMixin):
                 "upload_music",
                 "manage_albums",
                 "view_analytics",
-                "manage_profile"
+                PERMISSION_MANAGE_PROFILE
             ],
             UserRole.CUSTOMER: [
                 "purchase_music",
                 "download_purchases",
-                "manage_profile"
+                PERMISSION_MANAGE_PROFILE
             ]
         }
         
@@ -152,9 +156,5 @@ class UserSession(BaseModel):
     
     @property
     def is_revoked(self) -> bool:
-        """Check if session is revoked."""
-     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
+        """Verifica si la sesión ha sido revocada."""
         return self.revoked_at is not None
-
-        return self.revoked_at is not None
-       develop
