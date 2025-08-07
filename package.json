@@ -1,0 +1,82 @@
+{
+  "name": "nada-records-techno-store",
+  "version": "1.0.0",
+  "description": "Electronic music store platform with audio streaming and distribution services",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" --names \"🐍 API,⚛️  WEB\" --prefix-colors \"cyan,magenta\"",
+    "dev:backend": "cd backend && python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:services": "docker-compose up -d postgres redis minio adminer redis-commander mailhog",
+    "dev:full": "npm run dev:services && sleep 10 && npm run dev",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && python -m pip install -r requirements.txt",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\" --names \"🐍 API,⚛️  WEB\" --prefix-colors \"cyan,magenta\"",
+    "start:backend": "cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "start:frontend": "cd frontend && npm start",
+    "test": "concurrently \"npm run test:backend\" \"npm run test:frontend\" --names \"🐍 TEST,⚛️  TEST\" --prefix-colors \"yellow,blue\"",
+    "test:backend": "cd backend && python -m pytest tests/ -v --cov=app --cov-report=html",
+    "test:frontend": "cd frontend && npm run test",
+    "test:e2e": "cd frontend && npm run test:e2e",
+    "db:init": "cd backend && python scripts/init_db.py",
+    "db:migrate": "cd backend && alembic upgrade head",
+    "db:migration": "cd backend && alembic revision --autogenerate",
+    "db:reset": "docker-compose down postgres && docker volume rm nada-records-techno-store_postgres_data && npm run dev:services && sleep 15 && npm run db:init",
+    "db:seed": "cd backend && python scripts/seed_data.py",
+    "types:generate": "cd backend && python scripts/generate_types.py && cp generated_types.ts ../frontend/src/types/api.ts",
+    "types:check": "cd frontend && npx tsc --noEmit",
+    "lint": "concurrently \"npm run lint:backend\" \"npm run lint:frontend\" --names \"🐍 LINT,⚛️  LINT\" --prefix-colors \"green,yellow\"",
+    "lint:backend": "cd backend && python -m flake8 app/ && python -m mypy app/",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:fix": "concurrently \"npm run lint:fix:backend\" \"npm run lint:fix:frontend\"",
+    "lint:fix:backend": "cd backend && python -m black app/ && python -m isort app/",
+    "lint:fix:frontend": "cd frontend && npm run lint -- --fix",
+    "clean": "npm run clean:frontend && npm run clean:backend && docker-compose down && docker system prune -f",
+    "clean:frontend": "cd frontend && rm -rf .next node_modules && npm install",
+    "clean:backend": "cd backend && find . -type d -name '__pycache__' -exec rm -rf {} + && find . -name '*.pyc' -delete",
+    "setup": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
+    "setup:dev": "npm run setup && npm run dev:services && sleep 15 && npm run db:init && npm run db:seed",
+    "logs": "docker-compose logs -f",
+    "logs:postgres": "docker-compose logs -f postgres",
+    "logs:redis": "docker-compose logs -f redis",
+    "logs:minio": "docker-compose logs -f minio",
+    "health": "curl -f http://localhost:8000/api/v1/health || echo 'Backend health check failed'",
+    "health:services": "docker-compose ps",
+    "security:scan": "cd backend && python -m safety check && cd ../frontend && npm audit",
+    "security:fix": "cd backend && pip-audit --fix && cd ../frontend && npm audit fix",
+    "format": "npm run lint:fix && cd frontend && npm run format"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "@types/node": "^20.10.0"
+  },
+  "keywords": [
+    "music",
+    "electronic",
+    "streaming",
+    "fastapi",
+    "nextjs",
+    "typescript",
+    "audio",
+    "techno"
+  ],
+  "author": "Nada Records",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Neiland85/nada-records-techno-store.git"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}

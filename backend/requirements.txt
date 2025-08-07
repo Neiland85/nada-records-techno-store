@@ -57,11 +57,11 @@ sentry-sdk[fastapi]==2.34.1
 
 # Email
 emails==0.6
+sendgrid==6.11.0  # SendGrid API for email delivery
 
 # Additional utilities
 python-dateutil==2.8.2
 pytz==2023.3
-httpx==0.26.0
 aiofiles==23.2.1  # Async file operations
 Pillow==10.3.0  # Image processing for album covers
 python-magic==0.4.27  # File type detection

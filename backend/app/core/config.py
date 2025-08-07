@@ -6,7 +6,8 @@ from typing import List, Optional, Dict, Any
 from datetime import timedelta
 from functools import lru_cache
 
-from pydantic import BaseSettings, validator, PostgresDsn, RedisDsn, EmailStr, HttpUrl
+from pydantic import validator, PostgresDsn, RedisDsn, EmailStr, HttpUrl
+from pydantic_settings import BaseSettings
 from pydantic.types import SecretStr
 
 
@@ -31,15 +32,15 @@ class Settings(BaseSettings):
     DATABASE_POOL_TIMEOUT: int = 30
     
     # Redis settings
-    REDIS_URL: RedisDsn
+    REDIS_URL: RedisDsn = "redis://localhost:6379/0"
     REDIS_POOL_SIZE: int = 10
     REDIS_DECODE_RESPONSES: bool = True
     
-    # Storage configuration (Backblaze B2)
-    B2_KEY_ID: SecretStr
-    B2_APPLICATION_KEY: SecretStr
-    B2_BUCKET_NAME: str
-    B2_BUCKET_ID: str
+    # Storage configuration (Backblaze B2) - Optional for development
+    B2_KEY_ID: SecretStr = SecretStr("")
+    B2_APPLICATION_KEY: SecretStr = SecretStr("")
+    B2_BUCKET_NAME: str = ""
+    B2_BUCKET_ID: str = ""
     B2_ENDPOINT_URL: Optional[HttpUrl] = None
     
     # Storage buckets
@@ -47,15 +48,15 @@ class Settings(BaseSettings):
     COVER_BUCKET: str = "album-covers"
     PREVIEW_BUCKET: str = "track-previews"
     
-    # Stripe configuration
-    STRIPE_PUBLISHABLE_KEY: str
-    STRIPE_SECRET_KEY: SecretStr
-    STRIPE_WEBHOOK_SECRET: SecretStr
-    STRIPE_SUCCESS_URL: HttpUrl
-    STRIPE_CANCEL_URL: HttpUrl
+    # Stripe configuration - Optional for development
+    STRIPE_PUBLISHABLE_KEY: str = ""
+    STRIPE_SECRET_KEY: SecretStr = SecretStr("")
+    STRIPE_WEBHOOK_SECRET: SecretStr = SecretStr("")
+    STRIPE_SUCCESS_URL: HttpUrl = "http://localhost:3000/success"
+    STRIPE_CANCEL_URL: HttpUrl = "http://localhost:3000/cancel"
     
     # JWT settings
-    JWT_SECRET_KEY: SecretStr
+    JWT_SECRET_KEY: SecretStr = SecretStr("your-secret-key-here")
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -87,18 +88,23 @@ class Settings(BaseSettings):
     RATE_LIMIT_PER_HOUR: int = 1000
     UPLOAD_RATE_LIMIT_PER_DAY: int = 100
     
-    # Email settings
-    SMTP_HOST: str
+    # Email settings - SMTP Configuration
+    SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USER: str
-    SMTP_PASSWORD: SecretStr
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: SecretStr = SecretStr("")
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False
-    EMAIL_FROM_NAME: str = "Music Store"
-    EMAIL_FROM_ADDRESS: EmailStr
+    EMAIL_FROM_NAME: str = "Nada Records Techno Store"
+    EMAIL_FROM_ADDRESS: EmailStr = "noreply@nadarecords.com"
+    
+    # SendGrid Configuration
+    SENDGRID_API_KEY: SecretStr = SecretStr("")
+    SENDGRID_FROM_EMAIL: EmailStr = "noreply@nadarecords.com"
+    SENDGRID_FROM_NAME: str = "Nada Records Techno Store"
     
     # Frontend URL
-    FRONTEND_URL: HttpUrl
+    FRONTEND_URL: HttpUrl = "http://localhost:3000"
     
     # Celery settings
     CELERY_BROKER_URL: Optional[RedisDsn] = None
@@ -106,7 +112,7 @@ class Settings(BaseSettings):
     CELERY_TASK_ALWAYS_EAGER: bool = False
     
     # Security settings
-    SECRET_KEY: SecretStr  # For general encryption needs
+    SECRET_KEY: SecretStr = SecretStr("your-secret-key-here")  # For general encryption needs
     ALLOWED_HOSTS: List[str] = ["*"]
     SECURE_HEADERS_ENABLED: bool = True
     
@@ -181,14 +187,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = True
-        
-        # Custom environment variable names
-        fields = {
-            "DATABASE_URL": {"env": "DATABASE_URL"},
-            "REDIS_URL": {"env": "REDIS_URL"},
-            "B2_KEY_ID": {"env": "BACKBLAZE_KEY_ID"},
-            "B2_APPLICATION_KEY": {"env": "BACKBLAZE_APPLICATION_KEY"},
-        }
+        extra = "ignore"
 
 
 @lru_cache()
@@ -203,8 +202,4 @@ def get_settings() -> Settings:
 
 
 # Create settings instance
-    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
 settings = get_settings()
-
-settings = get_settings()
-     develop
