@@ -6,6 +6,7 @@ python-multipart==0.0.18  # Security fix for DoS via malformed multipart/form-da
 # Database
 sqlalchemy==2.0.25
 asyncpg==0.29.0
+psycopg2-binary==2.9.9
 alembic==1.13.1
 
 # Data validation and settings

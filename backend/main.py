@@ -1,5 +1,11 @@
 """Main FastAPI application entry point."""
 
+import sys
+import os
+
+# Add the backend directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings

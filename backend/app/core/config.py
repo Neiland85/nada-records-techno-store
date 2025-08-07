@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     WORKERS: int = 1
     
     # Database settings
-    DATABASE_URL: PostgresDsn
+    DATABASE_URL: PostgresDsn = "postgresql://user:password@localhost:5432/nada_records_db"
     DATABASE_POOL_SIZE: int = 20
     DATABASE_MAX_OVERFLOW: int = 40
     DATABASE_POOL_TIMEOUT: int = 30
