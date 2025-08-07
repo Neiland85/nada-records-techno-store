@@ -27,8 +27,4 @@ __all__ = [
     "PermissionChecker",
     "rate_limit",
     "oauth2_scheme",
-     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
 ]
-
-]
-      develop

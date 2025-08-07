@@ -1,0 +1,81 @@
+# Project Context
+This is a music store platform specializing in electronic music with audio streaming and distribution services.
+
+# Tech Stack
+- Backend: FastAPI (Python 3.11+)
+- Frontend: Next.js 15+ with TypeScript
+- Database: PostgreSQL with SQLAlchemy ORM
+- Cache: Redis
+- Storage: Backblaze B2/S3
+- Payments: Stripe
+
+# Coding Standards
+- Use type hints in Python
+- Use TypeScript strict mode
+- Follow RESTful API conventions
+- Implement proper error handling
+- Add comprehensive logging
+- Write tests for critical paths
+
+# Audio Processing
+- Support WAV, MP3, FLAC formats
+- Generate waveforms for visualization
+- Create 30-second previews with watermark
+- Extract and store BPM and key metadata
+
+# Security
+- JWT authentication with refresh tokens
+- Rate limiting on all endpoints
+- Validate all file uploads
+- Sanitize user inputs
+- Use environment variables for secrets
+
+# Development Workflow
+- Use develop branch for active development
+- Create feature branches for new functionality
+- Security fixes get dedicated security/ branches
+- All code must pass linting and type checking
+- Comprehensive testing before merging
+
+# Architecture Patterns
+- Clean architecture with dependency injection
+- Repository pattern for data access
+- Service layer for business logic
+- Event-driven architecture for async operations
+- Microservices communication via APIs
+
+# Audio-Specific Requirements
+- Real-time waveform generation
+- High-quality audio streaming
+- Lossless format support
+- Audio metadata extraction
+- Preview generation with watermarks
+- BPM and key detection
+
+# Performance Considerations
+- Database query optimization
+- Redis caching strategies
+- CDN for static assets
+- Audio streaming optimization
+- Image optimization for covers
+
+# File Organization
+backend/
+├── app/
+│   ├── api/          # API routes and endpoints
+│   ├── core/         # Configuration and settings
+│   ├── models/       # SQLAlchemy models
+│   ├── services/     # Business logic
+│   └── utils/        # Helper functions
+├── scripts/          # Database and utility scripts
+└── tests/           # Backend tests
+
+frontend/
+├── src/
+│   ├── components/   # React components
+│   ├── hooks/        # Custom hooks
+│   ├── services/     # API clients
+│   ├── store/        # State management
+│   ├── types/        # TypeScript definitions
+│   └── utils/        # Helper functions
+└── public/          # Static assets
