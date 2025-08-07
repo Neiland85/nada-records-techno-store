@@ -263,8 +263,4 @@ class AudioFile(BaseModel):
     __table_args__ = (
         Index("idx_audio_track_format_quality", "track_id", "format", "quality"),
         UniqueConstraint("track_id", "format", "quality", name="uq_track_format_quality"),
-    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
     )
-
-    )
-     develop

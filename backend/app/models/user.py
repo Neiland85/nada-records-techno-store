@@ -153,8 +153,4 @@ class UserSession(BaseModel):
     @property
     def is_revoked(self) -> bool:
         """Check if session is revoked."""
-     cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
         return self.revoked_at is not None
-
-        return self.revoked_at is not None
-       develop
