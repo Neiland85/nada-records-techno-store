@@ -5,6 +5,12 @@
   "installCommand": "npm install",
   "outputDirectory": "frontend",
   "devCommand": "npm run dev:frontend",
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "develop": true
+    }
+  },
   "functions": {
     "frontend/.next/server/**/*.js": {
       "maxDuration": 30

@@ -52,7 +52,10 @@
     "health:services": "docker-compose ps",
     "security:scan": "cd backend && python -m safety check && cd ../frontend && npm audit",
     "security:fix": "cd backend && pip-audit --fix && cd ../frontend && npm audit fix",
-    "format": "npm run lint:fix && cd frontend && npm run format"
+    "format": "npm run lint:fix && cd frontend && npm run format",
+    "vercel:configure": "./scripts/configure-vercel-deployment.sh",
+    "vercel:deploy": "vercel --prod",
+    "vercel:preview": "vercel"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
