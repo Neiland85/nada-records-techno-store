@@ -46,7 +46,4 @@ __all__ = [
     "PaymentMethod",
     "DistributionStatus",
     "DistributionPlatform",
-    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
 ]
-
-     develop
