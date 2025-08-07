@@ -1,0 +1,276 @@
+# =============================================================================
+# NADA RECORDS TECHNO STORE - AI DEVELOPMENT GUIDELINES
+# =============================================================================
+
+## PROJECT OVERVIEW
+You are working on a comprehensive music store platform specializing in electronic music 
+with advanced audio streaming, processing, and distribution capabilities. This is a full-stack 
+application with modern technologies and professional-grade features.
+
+## CORE TECHNOLOGIES & VERSIONS
+Backend: FastAPI 0.104+ (Python 3.11+)
+Frontend: Next.js 15+ with React 19+ and TypeScript 5+
+Database: PostgreSQL 15+ with SQLAlchemy 2.0+ (async)
+Cache/Queue: Redis 7+ for caching and Celery task queue
+Storage: Backblaze B2 (S3-compatible) for audio files and assets
+Payments: Stripe API v2023+ for payment processing
+Email: SendGrid API for transactional emails
+Deployment: Vercel (frontend) + Railway/Render (backend)
+Monitoring: Sentry for error tracking, logging
+
+## DEVELOPMENT STANDARDS
+
+### Python/FastAPI Backend
+- ALWAYS use type hints for all functions, methods, and variables
+- Use Pydantic v2 models for request/response validation
+- Implement async/await patterns for all I/O operations
+- Follow PEP 8 with Black formatting (line length: 88)
+- Use dependency injection pattern with FastAPI Depends()
+- Implement comprehensive error handling with custom exceptions
+- Add structured logging with correlation IDs
+- Write docstrings for all public functions and classes
+
+### TypeScript/Next.js Frontend
+- ALWAYS use TypeScript strict mode with no implicit any
+- Use React 19 features (Server Components, Actions, etc.)
+- Implement proper error boundaries and suspense
+- Use Tailwind CSS for styling with consistent design system
+- Implement proper state management (Zustand/Context)
+- Add proper loading states and optimistic updates
+- Use Next.js App Router exclusively
+- Implement proper SEO and metadata
+
+### Database & Data Access
+- Use SQLAlchemy 2.0+ async patterns exclusively
+- Implement repository pattern for data access abstraction
+- Use database migrations with Alembic
+- Implement proper indexing for query performance
+- Use connection pooling and query optimization
+- Add database query logging in development
+- Implement soft deletes where appropriate
+
+### API Design
+- Follow RESTful conventions with proper HTTP status codes
+- Use consistent endpoint naming (kebab-case URLs)
+- Implement API versioning (/api/v1/)
+- Add proper CORS configuration
+- Implement rate limiting per endpoint
+- Use pagination for list endpoints (limit/offset)
+- Add comprehensive OpenAPI documentation
+- Implement proper caching headers
+
+## AUDIO PROCESSING REQUIREMENTS
+
+### Supported Formats & Quality
+Input: WAV, FLAC, MP3, AAC, OGG (high quality only)
+Output: Multiple quality tiers (320kbps, 192kbps, 128kbps)
+Lossless: FLAC for archival, WAV for processing
+Streaming: Progressive download with adaptive bitrate
+
+### Audio Processing Pipeline
+- Metadata Extraction: BPM, key, genre, duration, waveform data
+- Preview Generation: 30-second clips with fade in/out
+- Waveform Visualization: Real-time generation for player UI
+- Audio Normalization: Consistent volume levels across tracks
+- Watermark Application: For preview tracks (optional)
+- Multi-format Export: Automatic conversion to required formats
+
+### Audio Player Features
+- Real-time Waveform Display: Interactive seek functionality
+- Crossfade Support: Smooth transitions between tracks
+- Playlist Management: Queue, shuffle, repeat modes
+- Offline Capability: Progressive Web App features
+- Audio Analysis: Real-time spectrum analysis
+
+## SECURITY IMPLEMENTATION
+
+### Authentication & Authorization
+- JWT Tokens: Access (15min) + Refresh (7 days) token strategy
+- Role-based Access: Admin, Artist, Customer, Guest permissions
+- Multi-factor Auth: Email verification + optional 2FA
+- Session Management: Secure token storage and rotation
+- Password Security: Argon2 hashing with proper salting
+
+### Data Protection
+- Input Validation: All user inputs validated and sanitized
+- File Upload Security: Type validation, size limits, malware scanning
+- SQL Injection Prevention: Parameterized queries only
+- XSS Protection: CSP headers and input sanitization
+- Rate Limiting: Per-IP and per-user limits on sensitive endpoints
+- HTTPS Enforcement: All communication over TLS
+
+### Environment Security
+- Secret Management: All credentials in environment variables
+- Production Config: Separate configurations per environment
+- Audit Logging: Track all sensitive operations
+- Database Security: Encrypted connections and proper user permissions
+
+## PERFORMANCE OPTIMIZATION
+
+### Backend Performance
+- Database Optimization: Query analysis, proper indexing, connection pooling
+- Caching Strategy: Redis for session data, query results, and file metadata
+- Async Processing: Celery for heavy tasks (audio processing, email sending)
+- API Response Caching: HTTP caching headers and CDN integration
+- File Streaming: Efficient large file delivery with range requests
+
+### Frontend Performance
+- Code Splitting: Route-based and component-based splitting
+- Image Optimization: Next.js Image component with WebP/AVIF
+- Audio Streaming: Progressive loading and prefetching
+- Bundle Analysis: Regular bundle size monitoring
+- Service Worker: Offline capability and resource caching
+
+### Infrastructure
+- CDN Integration: CloudFlare for static assets and audio streaming
+- Database Scaling: Read replicas and query optimization
+- Load Balancing: Horizontal scaling capability
+- Monitoring: Real-time performance metrics and alerting
+
+## TESTING STRATEGY
+
+### Backend Testing
+- Unit Tests: pytest with >90% coverage for business logic
+- Integration Tests: Database and external service integration
+- API Tests: Full endpoint testing with multiple scenarios
+- Load Testing: Performance testing for audio streaming
+- Security Testing: OWASP compliance and vulnerability scanning
+
+### Frontend Testing
+- Component Tests: Jest + React Testing Library
+- E2E Tests: Playwright for critical user journeys
+- Visual Regression: Screenshot testing for UI consistency
+- Performance Tests: Lighthouse CI integration
+- Accessibility Tests: WCAG compliance testing
+
+## FILE STRUCTURE & ORGANIZATION
+
+### Backend Structure
+backend/
+├── app/
+│   ├── main.py                 # FastAPI application entry
+│   ├── api/
+│   │   ├── deps/              # Dependencies and middleware
+│   │   └── v1/
+│   │       ├── endpoints/     # API route handlers
+│   │       └── __init__.py
+│   ├── core/
+│   │   ├── config.py          # Environment configuration
+│   │   ├── database.py        # Database connection
+│   │   ├── email.py           # Email service integration
+│   │   └── security.py        # Auth and security utilities
+│   ├── models/                # SQLAlchemy models
+│   ├── services/              # Business logic layer
+│   ├── utils/                 # Helper functions
+│   └── schemas/               # Pydantic models
+├── scripts/                   # Database and utility scripts
+├── tests/                     # Comprehensive test suite
+├── requirements.txt           # Production dependencies
+└── alembic/                  # Database migrations
+
+### Frontend Structure
+frontend/
+├── src/
+│   ├── app/                   # Next.js App Router
+│   ├── components/
+│   │   ├── ui/               # Reusable UI components
+│   │   ├── player/           # Audio player components
+│   │   └── admin/            # Admin interface
+│   ├── hooks/                # Custom React hooks
+│   ├── lib/                  # Utility libraries and configs
+│   ├── services/             # API client and data fetching
+│   ├── store/                # State management
+│   ├── types/                # TypeScript type definitions
+│   └── utils/                # Helper functions
+├── public/
+│   ├── audio/                # Sample audio files
+│   └── images/               # Static images
+└── tests/                    # Frontend test suite
+
+## DEPLOYMENT & DEVOPS
+
+### Development Workflow
+Branch Strategy: main (production), develop (staging), feature/* (development)
+Code Reviews: Required for all changes to main/develop
+CI/CD Pipeline: GitHub Actions with automated testing and deployment
+Environment Parity: Development, staging, and production consistency
+
+### Deployment Strategy
+Frontend: Vercel with preview deployments for PRs
+Backend: Railway/Render with Docker containers
+Database: Managed PostgreSQL service with automated backups
+Monitoring: Real-time error tracking and performance monitoring
+
+### Quality Gates
+Linting: ESLint (frontend) + Black/Flake8 (backend)
+Type Checking: TypeScript strict mode + mypy for Python
+Security Scanning: Automated dependency vulnerability checks
+Performance Budgets: Bundle size and Core Web Vitals monitoring
+
+## COMMON DEVELOPMENT PATTERNS
+
+### Error Handling
+Backend - Custom exception handling:
+```python
+class MusicStoreException(Exception):
+    def __init__(self, message: str, status_code: int = 400):
+        self.message = message
+        self.status_code = status_code
+```
+
+Frontend - Error boundaries and proper error states:
+```typescript
+const [error, setError] = useState<string | null>(null);
+```
+
+### API Integration
+Use proper TypeScript interfaces for API responses:
+```typescript
+interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  duration: number;
+  waveform_data: number[];
+}
+```
+
+### State Management
+Use Zustand for global state:
+```typescript
+interface PlayerStore {
+  currentTrack: Track | null;
+  isPlaying: boolean;
+  volume: number;
+  setTrack: (track: Track) => void;
+}
+```
+
+## IMPORTANT REMINDERS
+- Always implement proper loading states and error handling
+- Use TypeScript strict mode with no `any` types
+- Implement proper authentication checks on all protected routes
+- Add comprehensive logging for debugging and monitoring
+- Follow accessibility guidelines (WCAG 2.1 AA)
+- Implement proper SEO metadata and Open Graph tags
+- Use semantic HTML and proper ARIA labels
+- Test on multiple devices and browsers
+- Implement proper analytics and user tracking (GDPR compliant)
+- Keep dependencies updated and monitor for security vulnerabilities
+
+## CURRENT IMPLEMENTATIONS
+SendGrid Email Service: ✅ Implemented with proper error handling
+Vercel Deployment: ✅ Configured with Next.js framework detection
+Type Safety: ✅ Corrected all type annotation inconsistencies
+Configuration: ✅ Pydantic settings with custom validators
+API Structure: ✅ FastAPI with proper dependency injection
+
+## NEXT PRIORITIES
+1. Database models and migrations setup
+2. Audio processing service implementation
+3. User authentication and authorization
+4. Payment integration with Stripe
+5. Audio player UI components
+6. Real-time features (WebSocket/Server-Sent Events)
+7. Performance optimization and caching
+8. Comprehensive testing suite
