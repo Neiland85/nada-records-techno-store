@@ -100,6 +100,7 @@ previews/
 .env.production
 .env.development
 .env.*.local
+.env.docker
 
 # API Keys and Secrets
 secrets/
@@ -284,7 +285,6 @@ temp/
 # Uncomment if you want to ignore lock files
 # package-lock.json
 # yarn.lock
-# pnpm-lock.yaml
+pnpm-lock.yaml
 # poetry.lock
 # Pipfile.lock
-.env.local

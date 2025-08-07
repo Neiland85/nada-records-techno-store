@@ -1,14 +1,17 @@
 version: '3.8'
 
+# Load environment variables from .env.docker file
+# Copy .env.docker.example to .env.docker and configure your secrets
+
 services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: nada_records_postgres
     environment:
-      POSTGRES_DB: nada_records_dev
-      POSTGRES_USER: nada_records
-      POSTGRES_PASSWORD: dev_password_123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
     ports:
       - "5432:5432"
@@ -18,7 +21,7 @@ services:
     networks:
       - nada_records_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U nada_records -d nada_records_dev"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,7 +32,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: nada_records_redis
-    command: redis-server --appendonly yes --requirepass dev_redis_password
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
     ports:
       - "6379:6379"
     volumes:
@@ -50,9 +53,9 @@ services:
     container_name: nada_records_minio
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin123
-      MINIO_DEFAULT_BUCKETS: nada-records-dev,nada-records-tracks,nada-records-covers
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_DEFAULT_BUCKETS: ${MINIO_DEFAULT_BUCKETS}
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -79,7 +82,7 @@ services:
       - nada_records_network
     entrypoint: >
       /bin/sh -c "
-      mc alias set minio http://minio:9000 minioadmin minioadmin123;
+      mc alias set minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
       mc mb --ignore-existing minio/nada-records-dev;
       mc mb --ignore-existing minio/nada-records-tracks;
       mc mb --ignore-existing minio/nada-records-covers;
@@ -97,8 +100,8 @@ services:
     networks:
       - nada_records_network
     environment:
-      ADMINER_DEFAULT_SERVER: postgres
-      ADMINER_DESIGN: dracula
+      ADMINER_DEFAULT_SERVER: ${ADMINER_DEFAULT_SERVER}
+      ADMINER_DESIGN: ${ADMINER_DESIGN}
     depends_on:
       postgres:
         condition: service_healthy
@@ -109,9 +112,9 @@ services:
     image: rediscommander/redis-commander:latest
     container_name: nada_records_redis_commander
     environment:
-      REDIS_HOSTS: local:redis:6379:0:dev_redis_password
-      HTTP_USER: admin
-      HTTP_PASSWORD: admin123
+      REDIS_HOSTS: local:redis:6379:0:${REDIS_PASSWORD}
+      HTTP_USER: ${REDIS_COMMANDER_USER}
+      HTTP_PASSWORD: ${REDIS_COMMANDER_PASSWORD}
     ports:
       - "8081:8081"
     networks:
