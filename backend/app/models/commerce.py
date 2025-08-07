@@ -2,12 +2,11 @@
 Commerce and transaction models: License, Order, Payment, Distribution.
 """
 
-from decimal import Decimal
 from enum import Enum
 
 from sqlalchemy import JSON, Boolean, Column, DateTime
 from sqlalchemy import Enum as SQLEnum
-from sqlalchemy import (Float, ForeignKey, Index, Integer, Numeric, String,
+from sqlalchemy import (ForeignKey, Index, Integer, Numeric, String,
                         Text, UniqueConstraint)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship

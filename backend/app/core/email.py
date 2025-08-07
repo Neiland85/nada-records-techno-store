@@ -314,10 +314,7 @@ class EmailService:
         """
         subject = "🔐 Restablecer Contraseña - Nada Records"
 
-        reset_url = f"{
-            os.getenv(
-                'FRONTEND_URL',
-                'http://localhost:3000')}/reset-password?token={reset_token}"
+        reset_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/reset-password?token={reset_token}"
 
         html_content = f"""
         <html>

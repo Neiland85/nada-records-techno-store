@@ -3,7 +3,6 @@ User model for authentication and authorization.
 """
 
 from enum import Enum
-from typing import List, Optional
 
 from sqlalchemy import Boolean, Column, DateTime
 from sqlalchemy import Enum as SQLEnum

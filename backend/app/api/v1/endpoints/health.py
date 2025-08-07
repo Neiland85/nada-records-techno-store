@@ -2,7 +2,12 @@
 Health check endpoint for monitoring system status.
 
 This endpoint provides comprehensive health checks for all system components
-including database, cache, storage, and external services.
+including database, cache, storage, and e        except Exception as e:
+            logger.error(f"Storage health check failed: {e}")
+            return {
+                "status": "unhealthy",
+                "error": f"Storage check failed: {str(e)}"
+            }l services.
 """
 
 import asyncio

@@ -3,7 +3,6 @@ Music-related models: Artist, Album, Track, AudioFile.
 """
 
 from enum import Enum
-from typing import Optional
 
 from sqlalchemy import JSON, Boolean, Column, Date, DateTime
 from sqlalchemy import Enum as SQLEnum
