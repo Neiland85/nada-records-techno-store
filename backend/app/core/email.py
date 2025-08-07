@@ -1,6 +1,5 @@
 """Email configuration and services using SendGrid."""
 
-import json
 import logging
 import os
 from datetime import datetime
@@ -148,15 +147,15 @@ class EmailService:
                 <h1 style="color: white; margin: 0;">🎵 Nada Records</h1>
                 <p style="color: white; margin: 10px 0 0 0;">Techno Store</p>
             </div>
-            
+
             <div style="padding: 30px; background-color: #f9f9f9;">
                 <h2 style="color: #333; margin-bottom: 20px;">¡Hola {user_name}!</h2>
-                
+
                 <p style="color: #666; line-height: 1.6;">
-                    ¡Bienvenido a <strong>Nada Records Techno Store</strong>! Estamos emocionados de tenerte 
+                    ¡Bienvenido a <strong>Nada Records Techno Store</strong>! Estamos emocionados de tenerte
                     como parte de nuestra comunidad de amantes del techno.
                 </p>
-                
+
                 <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <h3 style="color: #333; margin-top: 0;">🎧 ¿Qué puedes hacer ahora?</h3>
                     <ul style="color: #666; line-height: 1.6;">
@@ -166,22 +165,22 @@ class EmailService:
                         <li>Conectar con otros artistas de la comunidad</li>
                     </ul>
                 </div>
-                
+
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="{os.getenv('FRONTEND_URL', 'http://localhost:3000')}" 
-                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                              color: white; padding: 15px 30px; text-decoration: none; 
+                    <a href="{os.getenv('FRONTEND_URL', 'http://localhost:3000')}"
+                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                              color: white; padding: 15px 30px; text-decoration: none;
                               border-radius: 25px; display: inline-block; font-weight: bold;">
                         🚀 Comenzar Ahora
                     </a>
                 </div>
-                
+
                 <p style="color: #666; line-height: 1.6;">
                     Si tienes alguna pregunta, no dudes en contactarnos. ¡Estamos aquí para ayudarte!
                 </p>
-                
+
                 <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
-                
+
                 <p style="color: #999; font-size: 14px; text-align: center;">
                     Nada Records Techno Store<br>
                     El futuro del techno está aquí 🔊
@@ -193,19 +192,19 @@ class EmailService:
 
         plain_content = f"""
         ¡Hola {user_name}!
-        
+
         ¡Bienvenido a Nada Records Techno Store! Estamos emocionados de tenerte como parte de nuestra comunidad.
-        
+
         ¿Qué puedes hacer ahora?
         - Explorar nuestra colección de tracks techno exclusivos
         - Descargar samples y loops de alta calidad
         - Acceder a contenido premium para productores
         - Conectar con otros artistas de la comunidad
-        
+
         Visita nuestra tienda: {os.getenv('FRONTEND_URL', 'http://localhost:3000')}
-        
+
         ¡El futuro del techno está aquí!
-        
+
         Nada Records Techno Store
         """
 
@@ -254,15 +253,15 @@ class EmailService:
                 <h1 style="color: white; margin: 0;">🎵 Nada Records</h1>
                 <p style="color: white; margin: 10px 0 0 0;">Confirmación de Compra</p>
             </div>
-            
+
             <div style="padding: 30px; background-color: #f9f9f9;">
                 <h2 style="color: #333;">¡Gracias por tu compra, {user_name}!</h2>
-                
+
                 <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <h3 style="color: #333; margin-top: 0;">📋 Detalles de la Orden</h3>
                     <p><strong>Número de Orden:</strong> #{order_id}</p>
                     <p><strong>Total:</strong> ${total_amount:.2f}</p>
-                    
+
                     <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
                         <thead>
                             <tr style="background-color: #f5f5f5;">
@@ -276,18 +275,18 @@ class EmailService:
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/downloads" 
-                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                              color: white; padding: 15px 30px; text-decoration: none; 
+                    <a href="{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/downloads"
+                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                              color: white; padding: 15px 30px; text-decoration: none;
                               border-radius: 25px; display: inline-block; font-weight: bold;">
                         📥 Descargar Archivos
                     </a>
                 </div>
-                
+
                 <p style="color: #666; line-height: 1.6;">
-                    Tus archivos están listos para descargar. Los enlaces de descarga estarán disponibles 
+                    Tus archivos están listos para descargar. Los enlaces de descarga estarán disponibles
                     en tu cuenta por 30 días.
                 </p>
             </div>
@@ -299,7 +298,10 @@ class EmailService:
             to_email=to_email, subject=subject, html_content=html_content
         )
 
-    async def send_password_reset(self, to_email: str, reset_token: str) -> bool:
+    async def send_password_reset(
+            self,
+            to_email: str,
+            reset_token: str) -> bool:
         """
         Send password reset email.
 
@@ -312,7 +314,10 @@ class EmailService:
         """
         subject = "🔐 Restablecer Contraseña - Nada Records"
 
-        reset_url = f"{os.getenv('FRONTEND_URL', 'http://localhost:3000')}/reset-password?token={reset_token}"
+        reset_url = f"{
+            os.getenv(
+                'FRONTEND_URL',
+                'http://localhost:3000')}/reset-password?token={reset_token}"
 
         html_content = f"""
         <html>
@@ -321,29 +326,29 @@ class EmailService:
                 <h1 style="color: white; margin: 0;">🎵 Nada Records</h1>
                 <p style="color: white; margin: 10px 0 0 0;">Restablecer Contraseña</p>
             </div>
-            
+
             <div style="padding: 30px; background-color: #f9f9f9;">
                 <h2 style="color: #333;">Solicitud de Restablecimiento</h2>
-                
+
                 <p style="color: #666; line-height: 1.6;">
                     Recibimos una solicitud para restablecer la contraseña de tu cuenta.
                 </p>
-                
+
                 <div style="text-align: center; margin: 30px 0;">
-                    <a href="{reset_url}" 
-                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                              color: white; padding: 15px 30px; text-decoration: none; 
+                    <a href="{reset_url}"
+                       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                              color: white; padding: 15px 30px; text-decoration: none;
                               border-radius: 25px; display: inline-block; font-weight: bold;">
                         🔐 Restablecer Contraseña
                     </a>
                 </div>
-                
+
                 <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin: 20px 0;">
                     <p style="color: #856404; margin: 0; font-size: 14px;">
                         ⚠️ Este enlace expirará en 1 hora por seguridad.
                     </p>
                 </div>
-                
+
                 <p style="color: #666; line-height: 1.6; font-size: 14px;">
                     Si no solicitaste este restablecimiento, puedes ignorar este email de forma segura.
                 </p>
@@ -362,8 +367,10 @@ email_service = EmailService()
 
 
 async def send_email(
-    to_email: str, subject: str, html_content: str, plain_content: Optional[str] = None
-) -> bool:
+        to_email: str,
+        subject: str,
+        html_content: str,
+        plain_content: Optional[str] = None) -> bool:
     """Convenience function to send email."""
     return await email_service.send_email(
         to_email=to_email,

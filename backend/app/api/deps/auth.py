@@ -12,7 +12,8 @@ from app.core.config import settings
 from app.core.database import SessionLocal
 
 # OAuth2 scheme for token authentication
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/auth/login")
 
 
 class AuthService:
@@ -60,7 +61,8 @@ def get_current_active_user(current_user: dict = Depends(get_current_user)):
     return current_user
 
 
-def get_current_verified_user(current_user: dict = Depends(get_current_active_user)):
+def get_current_verified_user(
+        current_user: dict = Depends(get_current_active_user)):
     """
     Get current verified user.
     """
@@ -71,25 +73,27 @@ def get_current_verified_user(current_user: dict = Depends(get_current_active_us
     return current_user
 
 
-def get_current_admin_user(current_user: dict = Depends(get_current_verified_user)):
+def get_current_admin_user(
+        current_user: dict = Depends(get_current_verified_user)):
     """
     Get current admin user.
     """
     if current_user.get("role") != "admin":
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions"
-        )
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not enough permissions")
     return current_user
 
 
-def get_current_artist_user(current_user: dict = Depends(get_current_verified_user)):
+def get_current_artist_user(
+        current_user: dict = Depends(get_current_verified_user)):
     """
     Get current artist user.
     """
     if current_user.get("role") not in ["artist", "admin"]:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Artist permissions required"
-        )
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Artist permissions required")
     return current_user
 
 
@@ -99,11 +103,12 @@ class RoleChecker:
     def __init__(self, allowed_roles: list[str]):
         self.allowed_roles = allowed_roles
 
-    def __call__(self, current_user: dict = Depends(get_current_verified_user)):
+    def __call__(self, current_user: dict = Depends(
+            get_current_verified_user)):
         if current_user.get("role") not in self.allowed_roles:
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions"
-            )
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Insufficient permissions")
         return current_user
 
 
@@ -113,7 +118,8 @@ class PermissionChecker:
     def __init__(self, required_permission: str):
         self.required_permission = required_permission
 
-    def __call__(self, current_user: dict = Depends(get_current_verified_user)):
+    def __call__(self, current_user: dict = Depends(
+            get_current_verified_user)):
         permissions = current_user.get("permissions", [])
         if self.required_permission not in permissions:
             raise HTTPException(

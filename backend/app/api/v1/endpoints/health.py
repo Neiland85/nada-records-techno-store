@@ -42,7 +42,7 @@ class HealthChecker:
             table_check = await session.execute(
                 text(
                     """
-                SELECT COUNT(*) FROM information_schema.tables 
+                SELECT COUNT(*) FROM information_schema.tables
                 WHERE table_schema = 'public'
             """
                 )
@@ -60,7 +60,10 @@ class HealthChecker:
 
         except SQLAlchemyError as e:
             logger.error(f"Database health check failed: {e}")
-            return {"status": "unhealthy", "error": str(e), "connection": "failed"}
+            return {
+                "status": "unhealthy",
+                "error": str(e),
+                "connection": "failed"}
         except Exception as e:
             logger.error(f"Unexpected database error: {e}")
             return {
@@ -110,7 +113,10 @@ class HealthChecker:
 
         except redis.RedisError as e:
             logger.error(f"Redis health check failed: {e}")
-            return {"status": "unhealthy", "error": str(e), "connection": "failed"}
+            return {
+                "status": "unhealthy",
+                "error": str(e),
+                "connection": "failed"}
         except Exception as e:
             logger.error(f"Unexpected Redis error: {e}")
             return {
@@ -169,7 +175,10 @@ class HealthChecker:
 
         except Exception as e:
             logger.error(f"Storage health check failed: {e}")
-            return {"status": "unhealthy", "error": f"Storage check failed: {str(e)}"}
+            return {
+                "status": "unhealthy",
+                "error": f"Storage check failed: {
+                    str(e)}"}
 
     @staticmethod
     async def check_audio_tools() -> Dict[str, Any]:
@@ -192,9 +201,8 @@ class HealthChecker:
 
                     if process.returncode == 0:
                         # Extract version information
-                        version_info = (
-                            stdout.decode().split("\n")[0] if stdout else "Unknown"
-                        )
+                        version_info = (stdout.decode().split(
+                            "\n")[0] if stdout else "Unknown")
                         tools_status[tool] = {
                             "available": True,
                             "version": version_info,
@@ -215,8 +223,7 @@ class HealthChecker:
                     }
 
             all_tools_available = all(
-                tool_status["available"] for tool_status in tools_status.values()
-            )
+                tool_status["available"] for tool_status in tools_status.values())
 
             return {
                 "status": "healthy" if all_tools_available else "degraded",
@@ -317,9 +324,11 @@ async def health_check(
 
         # Log health check results
         if overall_status != "healthy":
-            logger.warning(f"Health check completed with status: {overall_status}")
+            logger.warning(
+                f"Health check completed with status: {overall_status}")
         else:
-            logger.info(f"Health check completed successfully in {total_time}ms")
+            logger.info(
+                f"Health check completed successfully in {total_time}ms")
 
         return response
 

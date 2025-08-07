@@ -159,14 +159,16 @@ class Settings(BaseSettings):
         return []
 
     @validator("CELERY_BROKER_URL", pre=True)
-    def set_celery_broker(cls, v: Optional[str], values: Dict[str, Any]) -> str:
+    def set_celery_broker(
+            cls, v: Optional[str], values: Dict[str, Any]) -> str:
         """Default Celery broker to Redis URL if not set."""
         if v is None and "REDIS_URL" in values:
             return values["REDIS_URL"]
         return v
 
     @validator("CELERY_RESULT_BACKEND", pre=True)
-    def set_celery_backend(cls, v: Optional[str], values: Dict[str, Any]) -> str:
+    def set_celery_backend(
+            cls, v: Optional[str], values: Dict[str, Any]) -> str:
         """Default Celery backend to Redis URL if not set."""
         if v is None and "REDIS_URL" in values:
             return values["REDIS_URL"]

@@ -45,8 +45,10 @@ class User(BaseModel, SoftDeleteMixin):
 
     # Role and permissions
     role = Column(
-        SQLEnum(UserRole), default=UserRole.CUSTOMER, nullable=False, index=True
-    )
+        SQLEnum(UserRole),
+        default=UserRole.CUSTOMER,
+        nullable=False,
+        index=True)
 
     # Account status
     is_active = Column(Boolean, default=True, nullable=False, index=True)
@@ -56,7 +58,10 @@ class User(BaseModel, SoftDeleteMixin):
     # Additional fields
     phone_number = Column(String(20), nullable=True)
     country = Column(String(2), nullable=True)  # ISO country code
-    language = Column(String(5), default="en", nullable=False)  # Language preference
+    language = Column(
+        String(5),
+        default="en",
+        nullable=False)  # Language preference
     timezone = Column(String(50), default="UTC", nullable=False)
 
     # OAuth fields (for future social login)
@@ -133,7 +138,11 @@ class UserSession(BaseModel):
     __tablename__ = "user_sessions"
 
     user_id = Column(UUID(as_uuid=True), nullable=False, index=True)
-    refresh_token = Column(String(500), unique=True, nullable=False, index=True)
+    refresh_token = Column(
+        String(500),
+        unique=True,
+        nullable=False,
+        index=True)
 
     # Session information
     ip_address = Column(String(45), nullable=True)  # Support IPv6

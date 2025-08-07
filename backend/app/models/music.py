@@ -110,8 +110,11 @@ class Album(BaseModel, SoftDeleteMixin):
     __tablename__ = "albums"
 
     artist_id = Column(
-        UUID(as_uuid=True), ForeignKey("artist_profiles.id"), nullable=False, index=True
-    )
+        UUID(
+            as_uuid=True),
+        ForeignKey("artist_profiles.id"),
+        nullable=False,
+        index=True)
 
     # Album information
     title = Column(String(200), nullable=False, index=True)
@@ -130,7 +133,10 @@ class Album(BaseModel, SoftDeleteMixin):
     # Publishing information
     label = Column(String(100), nullable=True)
     catalog_number = Column(String(50), nullable=True)
-    upc = Column(String(12), nullable=True, unique=True)  # Universal Product Code
+    upc = Column(
+        String(12),
+        nullable=True,
+        unique=True)  # Universal Product Code
 
     # Status
     is_published = Column(Boolean, default=False, nullable=False, index=True)
@@ -182,7 +188,8 @@ class Track(BaseModel, SoftDeleteMixin):
         String(12), nullable=True, unique=True
     )  # International Standard Recording Code
     lyrics = Column(Text, nullable=True)
-    credits = Column(JSON, default=dict, nullable=False)  # Producer, writer credits
+    # Producer, writer credits
+    credits = Column(JSON, default=dict, nullable=False)
 
     # Features
     featuring_artists = Column(
@@ -253,8 +260,14 @@ class AudioFile(BaseModel):
 
     # Indexes
     __table_args__ = (
-        Index("idx_audio_track_format_quality", "track_id", "format", "quality"),
+        Index(
+            "idx_audio_track_format_quality",
+            "track_id",
+            "format",
+            "quality"),
         UniqueConstraint(
-            "track_id", "format", "quality", name="uq_track_format_quality"
-        ),
+            "track_id",
+            "format",
+            "quality",
+            name="uq_track_format_quality"),
     )

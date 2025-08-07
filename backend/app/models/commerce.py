@@ -134,8 +134,10 @@ class Order(BaseModel):
     # Order information
     order_number = Column(String(50), unique=True, nullable=False, index=True)
     status = Column(
-        SQLEnum(OrderStatus), default=OrderStatus.PENDING, nullable=False, index=True
-    )
+        SQLEnum(OrderStatus),
+        default=OrderStatus.PENDING,
+        nullable=False,
+        index=True)
 
     # Pricing
     subtotal = Column(Numeric(10, 2), nullable=False)
@@ -163,8 +165,10 @@ class Order(BaseModel):
         "OrderItem", back_populates="order", cascade="all, delete-orphan"
     )
     payment = relationship(
-        "Payment", back_populates="order", uselist=False, cascade="all, delete-orphan"
-    )
+        "Payment",
+        back_populates="order",
+        uselist=False,
+        cascade="all, delete-orphan")
 
     # Indexes
     __table_args__ = (
@@ -182,8 +186,11 @@ class OrderItem(BaseModel):
         UUID(as_uuid=True), ForeignKey("orders.id"), nullable=False, index=True
     )
     license_id = Column(
-        UUID(as_uuid=True), ForeignKey("licenses.id"), nullable=False, index=True
-    )
+        UUID(
+            as_uuid=True),
+        ForeignKey("licenses.id"),
+        nullable=False,
+        index=True)
 
     # Item details
     quantity = Column(Integer, default=1, nullable=False)
@@ -212,8 +219,11 @@ class Payment(BaseModel):
     __tablename__ = "payments"
 
     order_id = Column(
-        UUID(as_uuid=True), ForeignKey("orders.id"), unique=True, nullable=False
-    )
+        UUID(
+            as_uuid=True),
+        ForeignKey("orders.id"),
+        unique=True,
+        nullable=False)
 
     # Payment details
     amount = Column(Numeric(10, 2), nullable=False)
