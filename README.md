@@ -2,7 +2,7 @@
 
 **EN:** Full-stack music store platform with audio streaming, multi-format downloads (WAV/MP3/FLAC), automated distribution services, and integrated payment processing. Built with FastAPI + Next.js.
 
-**ES:** Plataforma de tienda musical completa con streaming de audio, descargas multi-formato (WAV/MP3/FLAC), servicios de distribución automatizada y procesamiento de pagos integrado. Construida con FastAPI + Next.js.
+**ES:** Plataforma de tienda musical completa con streaming de audio, descargas multi-formato (WAV/MP3/FLAC), servicios de distribución automatized y procesamiento de pagos integrado. Construida con FastAPI + Next.js.
 
 ## 🚀 Quick Start
 
@@ -116,7 +116,7 @@ Or manually configure in [Vercel Dashboard](https://vercel.com/dashboard):
 
 ## 🔧 Available Scripts
 
-### Development
+### Development Scripts
 
 ```bash
 npm run dev              # Start backend + frontend
