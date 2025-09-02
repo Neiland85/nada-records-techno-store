@@ -15,6 +15,7 @@ python-dotenv==1.0.0
 
 # Authentication and security
 PyJWT[crypto]==2.8.0
+python-jose[cryptography]==3.3.0  # Added for JWT handling
 passlib[bcrypt]==1.7.4
 bcrypt==4.2.0
 
@@ -37,6 +38,10 @@ numpy==1.26.2
 scipy==1.11.4
 librosa==0.10.1  # Advanced audio analysis
 pydub==0.25.1  # Audio manipulation
+
+# File handling
+python-magic==0.4.27  # File type detection
+pillow==10.1.0  # Image processing for cover art
 
 # Testing
 pytest==7.4.4

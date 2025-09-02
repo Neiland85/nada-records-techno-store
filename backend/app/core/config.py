@@ -6,7 +6,8 @@ from typing import List, Optional, Dict, Any
 from datetime import timedelta
 from functools import lru_cache
 
-from pydantic import BaseSettings, validator, PostgresDsn, RedisDsn, EmailStr, HttpUrl
+from pydantic_settings import BaseSettings
+from pydantic import validator, PostgresDsn, EmailStr, HttpUrl
 from pydantic.types import SecretStr
 
 
@@ -31,7 +32,7 @@ class Settings(BaseSettings):
     DATABASE_POOL_TIMEOUT: int = 30
     
     # Redis settings
-    REDIS_URL: RedisDsn
+    REDIS_URL: str
     REDIS_POOL_SIZE: int = 10
     REDIS_DECODE_RESPONSES: bool = True
     
@@ -101,8 +102,8 @@ class Settings(BaseSettings):
     FRONTEND_URL: HttpUrl
     
     # Celery settings
-    CELERY_BROKER_URL: Optional[RedisDsn] = None
-    CELERY_RESULT_BACKEND: Optional[RedisDsn] = None
+    CELERY_BROKER_URL: Optional[str] = None
+    CELERY_RESULT_BACKEND: Optional[str] = None
     CELERY_TASK_ALWAYS_EAGER: bool = False
     
     # Security settings
@@ -203,8 +204,4 @@ def get_settings() -> Settings:
 
 
 # Create settings instance
-    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
 settings = get_settings()
-
-settings = get_settings()
-     develop

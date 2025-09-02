@@ -91,15 +91,43 @@ previews/
 !samples/*.wav  # Allow sample files for testing
 
 # =============================================
-# ENVIRONMENT & SECRETS
+# ENVIRONMENT & SECRETS - ENHANCED SECURITY
 # =============================================
 
-# Environment variables
+# Environment variables - ALL variations
 .env
 .env.local
 .env.production
 .env.development
+.env.staging
+.env.test
 .env.*.local
+.env.*.production
+.env.*.development
+.env.*.staging
+.env.*.test
+
+# Environment files in subdirectories
+*/.env
+*/.env.local
+*/.env.production
+*/env.development
+*/.env.staging
+*/.env.test
+*/env.*.local
+*/env.*.production
+*/env.*.development
+*/env.*.staging
+*/env.*.test
+
+# Environment backups and copies
+.env.backup
+.env.bak
+.env.save
+.env.old
+.env.copy
+*.env.backup
+*.env.bak
 
 # API Keys and Secrets
 secrets/
@@ -109,6 +137,26 @@ secrets/
 *.pfx
 credentials.json
 service-account.json
+
+# Vercel specific
+.vercel/
+.vercel.env.local
+.vercel.env.production
+
+# Netlify specific
+.netlify/
+.netlify.env.local
+.netlify.env.production
+
+# Railway specific
+.railway/
+.railway.env.local
+.railway.env.production
+
+# Render specific
+.render/
+.render.env.local
+.render.env.production
 
 # =============================================
 # DATABASES & STORAGE
