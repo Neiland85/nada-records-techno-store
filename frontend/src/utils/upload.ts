@@ -1,8 +1,8 @@
 import {
-  AUDIO_EXTENSIONS,
-  DEFAULT_UPLOAD_CONFIG,
-  type UploadErrorDetails,
-} from '@/types/upload';
+    AUDIO_EXTENSIONS,
+    DEFAULT_UPLOAD_CONFIG,
+    type UploadErrorDetails,
+} from '../types/upload';
 
 /**
  * Valida si un archivo es un tipo de audio soportado

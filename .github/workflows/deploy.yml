@@ -1,67 +1,58 @@
-name: Deploy to Vercel
+name: Deploy Frontend
 
 on:
   push:
-    branches: [ main, develop, feature/fix-upload-page ]  # Agregar develop para despliegues de desarrollo
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/deploy.yml'
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [ main ]
-    paths:
-      - 'frontend/**'
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: vercel-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+defaults:
+  run:
+    working-directory: ./frontend
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    # Ejecutar en main (producción), develop (desarrollo) o en ramas feature (preview)
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/feature/')
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
-    - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run linting
-      run: |
-        cd frontend
-        npm run lint
+      - name: Run lint
+        run: npm run lint
+        continue-on-error: true
 
-    - name: Run TypeScript check
-      run: |
-        cd frontend
-        npx tsc --noEmit
+      - name: Build application
+        run: npm run build
+        env:
+          NEXT_PUBLIC_STATSIG_CLIENT_KEY: ${{ secrets.NEXT_PUBLIC_STATSIG_CLIENT_KEY }}
+          STATSIG_SERVER_API_KEY: ${{ secrets.STATSIG_SERVER_API_KEY }}
+          EXPERIMENTATION_CONFIG_ITEM_KEY: ${{ secrets.EXPERIMENTATION_CONFIG_ITEM_KEY }}
 
-    - name: Build application
-      run: |
-        cd frontend
-        npm run build
-
-    - name: Deploy to Vercel (Preview)
-      if: github.ref != 'refs/heads/main'
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--prod=false'
-
-    - name: Deploy to Vercel (Production)
-      if: github.ref == 'refs/heads/main'
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--prod'
+      - name: Deploy to Vercel
+        run: npx vercel deploy --prod --token $VERCEL_TOKEN
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

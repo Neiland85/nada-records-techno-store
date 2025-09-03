@@ -1,15 +1,15 @@
-import {
-  type UploadErrorDetails,
-  type UploadResponse,
-  type UploadStatus,
-} from '@/types/upload';
-import {
-  createUploadFormData,
-  handleUploadError,
-  simulateUploadProgress,
-  validateFile,
-} from '@/utils/upload';
 import { useCallback, useState } from 'react';
+import {
+    type UploadErrorDetails,
+    type UploadResponse,
+    type UploadStatus,
+} from '../types/upload';
+import {
+    createUploadFormData,
+    handleUploadError,
+    simulateUploadProgress,
+    validateFile,
+} from '../utils/upload';
 
 interface UseAudioUploadOptions {
   albumId: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { AudioUploadForm } from '@/components/upload/AudioUploadForm';
+import { AudioUploadForm } from '../../components/upload/AudioUploadForm';
 
 export default function UploadExamplePage() {
   // Para este ejemplo, usaremos un albumId de ejemplo

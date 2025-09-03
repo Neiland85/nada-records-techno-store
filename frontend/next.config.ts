@@ -1,10 +1,14 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
+
+  // Transpile packages for better compatibility
+  transpilePackages: ['lucide-react'],
 
   // API configuration
   async rewrites() {
@@ -57,6 +61,12 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
     }
+
+    // Add path aliases
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, './src'),
+    };
 
     // Handle audio files
     config.module.rules.push({
