@@ -1,7 +1,7 @@
 'use client';
 
 import { AlertCircle, Music, Upload, X } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toast } from 'react-hot-toast';
 
@@ -53,7 +53,7 @@ export function AudioUploadForm({
         formData.append('albumId', albumId);
 
         const progressInterval = setInterval(() => {
-          setUploadProgress(prev => {
+          setUploadProgress((prev: number) => {
             if (prev >= 90) {
               clearInterval(progressInterval);
               return 90;
@@ -62,7 +62,7 @@ export function AudioUploadForm({
           });
         }, 200);
 
-        const response = await fetch('/api/upload', {
+        const response = await fetch('/api/upload/audio', {
           method: 'POST',
           body: formData,
         });
@@ -120,10 +120,10 @@ export function AudioUploadForm({
     [onError, uploadFile]
   );
 
-  const removeFile = () => {
+  const removeFile = useCallback(() => {
     setUploadedFile(null);
     setUploadProgress(0);
-  };
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -150,10 +150,9 @@ export function AudioUploadForm({
           {...getRootProps()}
           className={`
             relative border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-            ${
-              isDragActive
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+            ${isDragActive
+              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+              : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
             }
             ${uploading || disabled ? 'pointer-events-none opacity-50' : ''}
           `}
@@ -174,7 +173,7 @@ export function AudioUploadForm({
                 </div>
                 {!uploading && (
                   <button
-                    onClick={e => {
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                       e.stopPropagation();
                       removeFile();
                     }}
@@ -202,9 +201,8 @@ export function AudioUploadForm({
           ) : (
             <div className="space-y-4">
               <Upload
-                className={`w-12 h-12 mx-auto ${
-                  isDragActive ? 'text-blue-500' : 'text-gray-400'
-                }`}
+                className={`w-12 h-12 mx-auto ${isDragActive ? 'text-blue-500' : 'text-gray-400'
+                  }`}
               />
               <div>
                 <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
