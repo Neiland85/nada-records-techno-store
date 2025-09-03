@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import Image from 'next/image';
-import WaveSurfer from 'wavesurfer.js';
-import { 
-  Play, 
-  Pause, 
-  Volume2, 
-  VolumeX, 
-  SkipBack, 
-  SkipForward,
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  AlertCircle,
   Loader2,
-  AlertCircle
+  Pause,
+  Play,
+  SkipBack,
+  SkipForward,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import WaveSurfer from 'wavesurfer.js';
 
 // Types
 interface AudioPlayerProps {
@@ -88,7 +87,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   // Format time helper
   const formatTime = useCallback((seconds: number): string => {
     if (isNaN(seconds)) return '0:00';
-    
+
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -140,7 +139,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
       wavesurfer.on('play', () => {
         setState(prev => ({ ...prev, isPlaying: true }));
         onPlayStateChange?.(true);
-        
+
         // Set up MediaSession API
         if ('mediaSession' in navigator) {
           navigator.mediaSession.metadata = new MediaMetadata({
@@ -171,7 +170,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
       wavesurfer.on('audioprocess', () => {
         const currentTime = wavesurfer.getCurrentTime();
         const duration = wavesurfer.getDuration();
-        
+
         setState(prev => ({ ...prev, currentTime }));
         onTimeUpdate?.(currentTime, duration);
       });
@@ -261,7 +260,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   // Player controls
   const togglePlayPause = useCallback(() => {
     if (!wavesurferRef.current) return;
-    
+
     if (state.isPlaying) {
       wavesurferRef.current.pause();
     } else {
@@ -271,17 +270,17 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
   const seek = useCallback((seconds: number) => {
     if (!wavesurferRef.current) return;
-    
+
     const currentTime = wavesurferRef.current.getCurrentTime();
     const duration = wavesurferRef.current.getDuration();
     const newTime = Math.max(0, Math.min(duration, currentTime + seconds));
-    
+
     wavesurferRef.current.seekTo(newTime / duration);
   }, []);
 
   const adjustVolume = useCallback((delta: number) => {
     if (!wavesurferRef.current) return;
-    
+
     const newVolume = Math.max(0, Math.min(1, state.volume + delta));
     wavesurferRef.current.setVolume(newVolume);
     setState(prev => ({ ...prev, volume: newVolume, isMuted: newVolume === 0 }));
@@ -289,7 +288,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
   const toggleMute = useCallback(() => {
     if (!wavesurferRef.current) return;
-    
+
     if (state.isMuted) {
       wavesurferRef.current.setVolume(state.volume);
       setState(prev => ({ ...prev, isMuted: false }));
@@ -342,7 +341,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
               </motion.div>
             )}
           </AnimatePresence>
-          
+
           <div
             ref={waveformRef}
             className={`${state.isLoading ? 'hidden' : 'block'} cursor-pointer`}
@@ -404,7 +403,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
               <Volume2 className="w-5 h-5 text-gray-600" />
             )}
           </button>
-          
+
           <input
             type="range"
             min="0"
@@ -415,10 +414,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
               const newVolume = parseFloat(e.target.value);
               if (wavesurferRef.current) {
                 wavesurferRef.current.setVolume(newVolume);
-                setState(prev => ({ 
-                  ...prev, 
-                  volume: newVolume, 
-                  isMuted: newVolume === 0 
+                setState(prev => ({
+                  ...prev,
+                  volume: newVolume,
+                  isMuted: newVolume === 0
                 }));
               }
             }}
