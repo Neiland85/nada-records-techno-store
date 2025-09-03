@@ -1,7 +1,7 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { cn } from '../../utils';
 
 type ButtonVariant = 'default' | 'secondary' | 'outline' | 'ghost' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';

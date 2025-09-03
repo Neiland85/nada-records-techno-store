@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
 
+  // Transpile packages for better compatibility
+  transpilePackages: ['lucide-react'],
+
   // API configuration
   async rewrites() {
     const backendUrl = process.env.NEXT_PUBLIC_API_URL ||
