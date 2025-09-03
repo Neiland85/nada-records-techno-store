@@ -4,16 +4,15 @@ const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
-    serverComponentsExternalPackages: ["@vercel/analytics"],
   },
-  
+
   // API configuration
   async rewrites() {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 
-                      (process.env.NODE_ENV === 'production' 
-                        ? 'https://your-vercel-app.vercel.app' 
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL ||
+                      (process.env.NODE_ENV === 'production'
+                        ? 'https://your-vercel-app.vercel.app'
                         : 'http://localhost:8000');
-    
+
     return [
       {
         source: '/api/:path*',
@@ -21,33 +20,33 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  
+
   // Environment variables configuration
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
   },
-  
+
   // Image optimization
   images: {
     domains: ['localhost', 'your-vercel-app.vercel.app', 'your-backend-domain.com'],
     formats: ['image/webp', 'image/avif'],
     unoptimized: process.env.NODE_ENV === 'development',
   },
-  
+
   // Output configuration for Vercel
   output: 'standalone',
-  
+
   // TypeScript configuration
   typescript: {
     ignoreBuildErrors: false,
   },
-  
+
   // ESLint configuration
   eslint: {
     ignoreDuringBuilds: false,
   },
-  
+
   // Webpack configuration for audio processing
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -58,7 +57,7 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
     }
-    
+
     // Handle audio files
     config.module.rules.push({
       test: /\.(mp3|wav|flac|ogg|aac)$/,
@@ -70,10 +69,10 @@ const nextConfig: NextConfig = {
         },
       },
     });
-    
+
     return config;
   },
-  
+
   // Headers for audio streaming
   async headers() {
     return [
