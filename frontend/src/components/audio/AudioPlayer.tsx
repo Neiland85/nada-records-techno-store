@@ -223,6 +223,47 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
     onEnded,
   ]);
 
+  // Player controls
+  const togglePlayPause = useCallback(() => {
+    if (!wavesurferRef.current) return;
+    
+    if (state.isPlaying) {
+      wavesurferRef.current.pause();
+    } else {
+      wavesurferRef.current.play();
+    }
+  }, [state.isPlaying]);
+
+  const seek = useCallback((seconds: number) => {
+    if (!wavesurferRef.current) return;
+    
+    const currentTime = wavesurferRef.current.getCurrentTime();
+    const duration = wavesurferRef.current.getDuration();
+    const newTime = Math.max(0, Math.min(duration, currentTime + seconds));
+    
+    wavesurferRef.current.seekTo(newTime / duration);
+  }, []);
+
+  const adjustVolume = useCallback((delta: number) => {
+    if (!wavesurferRef.current) return;
+    
+    const newVolume = Math.max(0, Math.min(1, state.volume + delta));
+    wavesurferRef.current.setVolume(newVolume);
+    setState(prev => ({ ...prev, volume: newVolume, isMuted: newVolume === 0 }));
+  }, [state.volume]);
+
+  const toggleMute = useCallback(() => {
+    if (!wavesurferRef.current) return;
+    
+    if (state.isMuted) {
+      wavesurferRef.current.setVolume(state.volume);
+      setState(prev => ({ ...prev, isMuted: false }));
+    } else {
+      wavesurferRef.current.setVolume(0);
+      setState(prev => ({ ...prev, isMuted: true }));
+    }
+  }, [state.isMuted, state.volume]);
+
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -278,6 +319,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
     };
   }, [initializeWaveSurfer]);
 
+    feature/fix-upload-page
   // Player controls
   const togglePlayPause = useCallback(() => {
     if (!wavesurferRef.current) return;
@@ -326,6 +368,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
     }
   }, [state.isMuted, state.volume]);
 
+     develop
   if (state.hasError) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">

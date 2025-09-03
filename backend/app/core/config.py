@@ -6,7 +6,8 @@ from typing import List, Optional, Dict, Any
 from datetime import timedelta
 from functools import lru_cache
 
-from pydantic import BaseSettings, validator, PostgresDsn, RedisDsn, EmailStr, HttpUrl
+from pydantic import validator, EmailStr, HttpUrl
+from pydantic_settings import BaseSettings
 from pydantic.types import SecretStr
 
 
@@ -25,21 +26,21 @@ class Settings(BaseSettings):
     WORKERS: int = 1
     
     # Database settings
-    DATABASE_URL: PostgresDsn
+    DATABASE_URL: str
     DATABASE_POOL_SIZE: int = 20
     DATABASE_MAX_OVERFLOW: int = 40
     DATABASE_POOL_TIMEOUT: int = 30
     
     # Redis settings
-    REDIS_URL: RedisDsn
+    REDIS_URL: str = "redis://localhost:6379/0"
     REDIS_POOL_SIZE: int = 10
     REDIS_DECODE_RESPONSES: bool = True
     
-    # Storage configuration (Backblaze B2)
-    B2_KEY_ID: SecretStr
-    B2_APPLICATION_KEY: SecretStr
-    B2_BUCKET_NAME: str
-    B2_BUCKET_ID: str
+    # Storage configuration (Backblaze B2) - Optional for development
+    B2_KEY_ID: SecretStr = SecretStr("")
+    B2_APPLICATION_KEY: SecretStr = SecretStr("")
+    B2_BUCKET_NAME: str = ""
+    B2_BUCKET_ID: str = ""
     B2_ENDPOINT_URL: Optional[HttpUrl] = None
     
     # Storage buckets
@@ -47,15 +48,15 @@ class Settings(BaseSettings):
     COVER_BUCKET: str = "album-covers"
     PREVIEW_BUCKET: str = "track-previews"
     
-    # Stripe configuration
-    STRIPE_PUBLISHABLE_KEY: str
-    STRIPE_SECRET_KEY: SecretStr
-    STRIPE_WEBHOOK_SECRET: SecretStr
-    STRIPE_SUCCESS_URL: HttpUrl
-    STRIPE_CANCEL_URL: HttpUrl
+    # Stripe configuration - Optional for development
+    STRIPE_PUBLISHABLE_KEY: str = ""
+    STRIPE_SECRET_KEY: SecretStr = SecretStr("")
+    STRIPE_WEBHOOK_SECRET: SecretStr = SecretStr("")
+    STRIPE_SUCCESS_URL: str = "http://localhost:3000/success"
+    STRIPE_CANCEL_URL: str = "http://localhost:3000/cancel"
     
     # JWT settings
-    JWT_SECRET_KEY: SecretStr
+    JWT_SECRET_KEY: SecretStr = SecretStr("your-secret-key-here")
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -87,26 +88,31 @@ class Settings(BaseSettings):
     RATE_LIMIT_PER_HOUR: int = 1000
     UPLOAD_RATE_LIMIT_PER_DAY: int = 100
     
-    # Email settings
-    SMTP_HOST: str
+    # Email settings - SMTP Configuration
+    SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
-    SMTP_USER: str
-    SMTP_PASSWORD: SecretStr
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: SecretStr = SecretStr("")
     SMTP_TLS: bool = True
     SMTP_SSL: bool = False
-    EMAIL_FROM_NAME: str = "Music Store"
-    EMAIL_FROM_ADDRESS: EmailStr
+    EMAIL_FROM_NAME: str = "Nada Records Techno Store"
+    EMAIL_FROM_ADDRESS: str = "noreply@nadarecords.com"
+    
+    # SendGrid Configuration
+    SENDGRID_API_KEY: SecretStr = SecretStr("")
+    SENDGRID_FROM_EMAIL: str = "noreply@nadarecords.com"
+    SENDGRID_FROM_NAME: str = "Nada Records Techno Store"
     
     # Frontend URL
-    FRONTEND_URL: HttpUrl
+    FRONTEND_URL: str = "http://localhost:3000"
     
     # Celery settings
-    CELERY_BROKER_URL: Optional[RedisDsn] = None
-    CELERY_RESULT_BACKEND: Optional[RedisDsn] = None
+    CELERY_BROKER_URL: Optional[str] = None
+    CELERY_RESULT_BACKEND: Optional[str] = None
     CELERY_TASK_ALWAYS_EAGER: bool = False
     
     # Security settings
-    SECRET_KEY: SecretStr  # For general encryption needs
+    SECRET_KEY: SecretStr = SecretStr("your-secret-key-here")  # For general encryption needs
     ALLOWED_HOSTS: List[str] = ["*"]
     SECURE_HEADERS_ENABLED: bool = True
     
@@ -141,6 +147,34 @@ class Settings(BaseSettings):
         elif isinstance(v, list):
             return v
         return []
+    
+    @validator("REDIS_URL")
+    def validate_redis_url(cls, v: str) -> str:
+        """Validate Redis URL format."""
+        if v and not v.startswith(("redis://", "rediss://")):
+            raise ValueError("REDIS_URL must start with redis:// or rediss://")
+        return v
+    
+    @validator("DATABASE_URL")
+    def validate_database_url(cls, v: str) -> str:
+        """Validate Database URL format."""
+        if not v.startswith(("postgresql://", "postgresql+asyncpg://", "sqlite:///")):
+            raise ValueError("DATABASE_URL must be a valid PostgreSQL or SQLite URL")
+        return v
+    
+    @validator("EMAIL_FROM_ADDRESS", "SENDGRID_FROM_EMAIL")
+    def validate_email_addresses(cls, v: str) -> str:
+        """Validate email address format."""
+        if v and "@" not in v:
+            raise ValueError("Invalid email address format")
+        return v
+    
+    @validator("FRONTEND_URL", "STRIPE_SUCCESS_URL", "STRIPE_CANCEL_URL")
+    def validate_urls(cls, v: str) -> str:
+        """Validate URL format."""
+        if v and not v.startswith(("http://", "https://")):
+            raise ValueError("URL must start with http:// or https://")
+        return v
     
     @validator("CELERY_BROKER_URL", pre=True)
     def set_celery_broker(cls, v: Optional[str], values: Dict[str, Any]) -> str:
@@ -181,14 +215,7 @@ class Settings(BaseSettings):
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = True
-        
-        # Custom environment variable names
-        fields = {
-            "DATABASE_URL": {"env": "DATABASE_URL"},
-            "REDIS_URL": {"env": "REDIS_URL"},
-            "B2_KEY_ID": {"env": "BACKBLAZE_KEY_ID"},
-            "B2_APPLICATION_KEY": {"env": "BACKBLAZE_APPLICATION_KEY"},
-        }
+        extra = "ignore"
 
 
 @lru_cache()
@@ -203,8 +230,4 @@ def get_settings() -> Settings:
 
 
 # Create settings instance
-    cursor/configurar-backend-inicial-de-tienda-de-m-sica-908a
 settings = get_settings()
-
-settings = get_settings()
-     develop
