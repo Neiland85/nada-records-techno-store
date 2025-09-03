@@ -7,7 +7,7 @@ on:
       - 'frontend/**'
       - '.github/workflows/deploy.yml'
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
     paths:
       - 'frontend/**'
 
@@ -24,7 +24,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '18.x'
         cache: 'npm'
         cache-dependency-path: frontend/package-lock.json
 
@@ -48,6 +48,26 @@ jobs:
         cd frontend
         npm run build
 
+    - name: Check Vercel secrets
+      run: |
+        if [ -z "$VERCEL_TOKEN" ]; then
+          echo "VERCEL_TOKEN is not set"
+          exit 1
+        fi
+        if [ -z "$VERCEL_ORG_ID" ]; then
+          echo "VERCEL_ORG_ID is not set"
+          exit 1
+        fi
+        if [ -z "$VERCEL_PROJECT_ID" ]; then
+          echo "VERCEL_PROJECT_ID is not set"
+          exit 1
+        fi
+        echo "All Vercel secrets are configured"
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
     - name: Deploy to Vercel (Preview)
       if: github.ref != 'refs/heads/main'
       uses: amondnet/vercel-action@v25
@@ -56,6 +76,7 @@ jobs:
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod=false'
+        working-directory: ./frontend
 
     - name: Deploy to Vercel (Production)
       if: github.ref == 'refs/heads/main'
@@ -65,3 +86,4 @@ jobs:
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod'
+        working-directory: ./frontend
