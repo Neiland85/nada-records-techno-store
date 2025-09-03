@@ -20,6 +20,9 @@ jobs:
     concurrency:
       group: vercel-deploy-${{ github.ref }}
       cancel-in-progress: true
+    defaults:
+      run:
+        working-directory: ./frontend
 
     steps:
     - name: Checkout code
@@ -30,27 +33,19 @@ jobs:
       with:
         node-version: '18.x'
         cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+        cache-dependency-path: package-lock.json
 
     - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci
+      run: npm ci
 
     - name: Run linting
-      run: |
-        cd frontend
-        npm run lint
+      run: npm run lint
 
     - name: Run TypeScript check
-      run: |
-        cd frontend
-        npx tsc --noEmit
+      run: npx tsc --noEmit
 
     - name: Build application
-      run: |
-        cd frontend
-        npm run build
+      run: npm run build
 
     - name: Check Vercel secrets
       run: |
@@ -85,7 +80,6 @@ jobs:
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod=false'
-        working-directory: ./frontend
 
     - name: Deploy to Vercel (Production)
       if: github.ref == 'refs/heads/main'
@@ -95,4 +89,3 @@ jobs:
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
         vercel-args: '--prod'
-        working-directory: ./frontend
