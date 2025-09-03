@@ -2,7 +2,7 @@ name: Deploy to Vercel
 
 on:
   push:
-    branches: [ main, feature/fix-upload-page ]  # Agregar la rama actual para testing
+    branches: [ main, develop, feature/fix-upload-page ]  # Agregar develop para despliegues de desarrollo
     paths:
       - 'frontend/**'
       - '.github/workflows/deploy.yml'
@@ -14,8 +14,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Ejecutar en main (producción) o en ramas feature (preview)
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/feature/')
+    # Ejecutar en main (producción), develop (desarrollo) o en ramas feature (preview)
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/feature/')
 
     steps:
     - name: Checkout code
