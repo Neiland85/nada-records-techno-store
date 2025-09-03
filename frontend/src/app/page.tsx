@@ -1,7 +1,7 @@
-import { useAuthStore, useCartStore } from '@/stores';
 import { Disc, Music, Play, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuthStore, useCartStore } from '../stores';
 
 export default function Home() {
   const { addItem } = useCartStore();

@@ -1,7 +1,7 @@
 'use client';
 
-import { useUIStore } from '@/stores';
 import { Search, X } from 'lucide-react';
+import { useUIStore } from '../../stores';
 
 interface SearchBarProps {
   className?: string;

@@ -1,9 +1,9 @@
 'use client';
 
-import { useCartStore, useUIStore } from '@/stores';
 import { Filter, Grid, List, Play, Search, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useCartStore, useUIStore } from '../../stores';
 
 export default function AlbumsPage() {
   const { addItem } = useCartStore();

@@ -1,9 +1,9 @@
 'use client';
 
-import { useCartStore } from '@/stores';
 import { Minus, Plus, ShoppingCart, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useCartStore } from '../../stores';
 
 interface CartDrawerProps {
   className?: string;

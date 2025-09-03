@@ -1,7 +1,7 @@
 'use client';
 
-import { useAudioPlayerStore, useAuthStore, useCartStore, useUIStore } from '@/stores';
 import { useState } from 'react';
+import { useAudioPlayerStore, useAuthStore, useCartStore, useUIStore } from '../../stores';
 
 export default function StoresDemoPage() {
   const [email, setEmail] = useState('');

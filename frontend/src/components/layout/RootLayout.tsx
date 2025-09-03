@@ -1,9 +1,9 @@
 'use client';
 
-import { Header } from '@/components';
-import { CartDrawer } from '@/components/ui/CartDrawer';
-import { SearchBar } from '@/components/ui/SearchBar';
 import { ReactNode } from 'react';
+import { Header } from '../';
+import { CartDrawer } from '../ui/CartDrawer';
+import { SearchBar } from '../ui/SearchBar';
 
 interface RootLayoutProps {
   children: ReactNode;

@@ -1,9 +1,9 @@
 'use client';
 
-import { useAuthStore, useCartStore, useUIStore } from '@/stores';
 import { AudioLines, Menu, Search, ShoppingCart, User, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useAuthStore, useCartStore, useUIStore } from '../../stores';
 import { CartDrawer } from '../ui/CartDrawer';
 import { SearchBar } from '../ui/SearchBar';
 
