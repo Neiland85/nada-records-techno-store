@@ -1,4 +1,8 @@
-import { AUDIO_EXTENSIONS, DEFAULT_UPLOAD_CONFIG, type UploadErrorDetails } from '@/types/upload';
+import {
+  AUDIO_EXTENSIONS,
+  DEFAULT_UPLOAD_CONFIG,
+  type UploadErrorDetails,
+} from '@/types/upload';
 
 /**
  * Valida si un archivo es un tipo de audio soportado
@@ -52,7 +56,10 @@ export function generateUploadId(): string {
 /**
  * Valida completamente un archivo antes del upload
  */
-export function validateFile(file: File): { isValid: boolean; error?: UploadErrorDetails } {
+export function validateFile(file: File): {
+  isValid: boolean;
+  error?: UploadErrorDetails;
+} {
   // Validar tipo de archivo
   if (!isValidAudioFile(file)) {
     return {
@@ -60,8 +67,11 @@ export function validateFile(file: File): { isValid: boolean; error?: UploadErro
       error: {
         type: 'INVALID_FORMAT',
         message: 'Tipo de archivo no soportado. Use MP3, WAV, FLAC, AAC o OGG.',
-        details: { fileType: file.type, supportedTypes: DEFAULT_UPLOAD_CONFIG.acceptedFormats }
-      }
+        details: {
+          fileType: file.type,
+          supportedTypes: DEFAULT_UPLOAD_CONFIG.acceptedFormats,
+        },
+      },
     };
   }
 
@@ -72,8 +82,11 @@ export function validateFile(file: File): { isValid: boolean; error?: UploadErro
       error: {
         type: 'FILE_TOO_LARGE',
         message: `El archivo es demasiado grande. Máximo ${formatFileSize(DEFAULT_UPLOAD_CONFIG.maxFileSize)}.`,
-        details: { fileSize: file.size, maxSize: DEFAULT_UPLOAD_CONFIG.maxFileSize }
-      }
+        details: {
+          fileSize: file.size,
+          maxSize: DEFAULT_UPLOAD_CONFIG.maxFileSize,
+        },
+      },
     };
   }
 
@@ -89,7 +102,7 @@ export function extractFileMetadata(file: File) {
     size: file.size,
     type: file.type,
     lastModified: file.lastModified,
-    formattedSize: formatFileSize(file.size)
+    formattedSize: formatFileSize(file.size),
   };
 }
 
@@ -111,7 +124,7 @@ export function handleUploadError(error: unknown): UploadErrorDetails {
     return {
       type: 'NETWORK_ERROR',
       message: 'Error de conexión. Verifique su conexión a internet.',
-      details: error as unknown as Record<string, unknown> // Conversión a unknown primero
+      details: error as unknown as Record<string, unknown>, // Conversión a unknown primero
     };
   }
 
@@ -119,14 +132,17 @@ export function handleUploadError(error: unknown): UploadErrorDetails {
     return {
       type: 'SERVER_ERROR',
       message: 'Error del servidor. Intente nuevamente más tarde.',
-      details: { status: error.status, statusText: error.statusText }
+      details: { status: error.status, statusText: error.statusText },
     };
   }
 
   return {
     type: 'UNKNOWN_ERROR',
     message: 'Error desconocido durante el upload.',
-    details: typeof error === 'object' && error !== null ? error as Record<string, unknown> : undefined // Validación y conversión
+    details:
+      typeof error === 'object' && error !== null
+        ? (error as Record<string, unknown>)
+        : undefined, // Validación y conversión
   };
 }
 
@@ -137,7 +153,7 @@ export function simulateUploadProgress(
   onProgress: (progress: number) => void,
   duration: number = 2000
 ): Promise<void> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     let progress = 0;
     const interval = setInterval(() => {
       progress += Math.random() * 15;

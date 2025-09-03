@@ -9,8 +9,9 @@ import {
   SkipBack,
   SkipForward,
   Volume2,
-  VolumeX
+  VolumeX,
 } from 'lucide-react';
+import Image from 'next/image';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 
@@ -63,11 +64,11 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   waveformColors = {
     wave: '#64748b',
     progress: '#3b82f6',
-    cursor: '#ef4444'
+    cursor: '#ef4444',
   },
   onEnded,
   onPlayStateChange,
-  onTimeUpdate
+  onTimeUpdate,
 }) => {
   // Refs
   const waveformRef = useRef<HTMLDivElement>(null);
@@ -81,7 +82,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
     currentTime: 0,
     duration: 0,
     volume: 0.8,
-    isMuted: false
+    isMuted: false,
   });
 
   // Format time helper
@@ -118,7 +119,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
         interact: true,
         hideScrollbar: true,
         barWidth: 2,
-        barGap: 1
+        barGap: 1,
       });
 
       wavesurferRef.current = wavesurfer;
@@ -128,7 +129,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
         setState(prev => ({
           ...prev,
           isLoading: false,
-          duration: wavesurfer.getDuration()
+          duration: wavesurfer.getDuration(),
         }));
 
         if (autoPlay) {
@@ -145,14 +146,22 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
           navigator.mediaSession.metadata = new MediaMetadata({
             title,
             artist,
-            artwork: coverUrl ? [{ src: coverUrl, sizes: '512x512', type: 'image/jpeg' }] : undefined
+            artwork: coverUrl
+              ? [{ src: coverUrl, sizes: '512x512', type: 'image/jpeg' }]
+              : undefined,
           });
 
-          navigator.mediaSession.setActionHandler('play', () => wavesurfer.play());
-          navigator.mediaSession.setActionHandler('pause', () => wavesurfer.pause());
+          navigator.mediaSession.setActionHandler('play', () =>
+            wavesurfer.play()
+          );
+          navigator.mediaSession.setActionHandler('pause', () =>
+            wavesurfer.pause()
+          );
           navigator.mediaSession.setActionHandler('seekbackward', () => {
             const currentTime = wavesurfer.getCurrentTime();
-            wavesurfer.seekTo(Math.max(0, currentTime - 10) / wavesurfer.getDuration());
+            wavesurfer.seekTo(
+              Math.max(0, currentTime - 10) / wavesurfer.getDuration()
+            );
           });
           navigator.mediaSession.setActionHandler('seekforward', () => {
             const currentTime = wavesurfer.getCurrentTime();
@@ -181,35 +190,47 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
         onEnded?.();
       });
 
-      wavesurfer.on('error', (error) => {
+      wavesurfer.on('error', error => {
         console.error('WaveSurfer error:', error);
         setState(prev => ({
           ...prev,
           hasError: true,
           isLoading: false,
-          errorMessage: 'Failed to load audio'
+          errorMessage: 'Failed to load audio',
         }));
       });
 
       // Load the audio
       await wavesurfer.load(src);
-
     } catch (error) {
       console.error('Failed to initialize WaveSurfer:', error);
       setState(prev => ({
         ...prev,
         hasError: true,
         isLoading: false,
-        errorMessage: error instanceof Error ? error.message : 'Unknown error'
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
       }));
     }
-  }, [src, waveformColors, autoPlay, title, artist, coverUrl, onPlayStateChange, onTimeUpdate, onEnded]);
+  }, [
+    src,
+    waveformColors,
+    autoPlay,
+    title,
+    artist,
+    coverUrl,
+    onPlayStateChange,
+    onTimeUpdate,
+    onEnded,
+  ]);
 
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Only handle if no input is focused
-      if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') {
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA'
+      ) {
         return;
       }
 
@@ -278,13 +299,20 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
     wavesurferRef.current.seekTo(newTime / duration);
   }, []);
 
-  const adjustVolume = useCallback((delta: number) => {
-    if (!wavesurferRef.current) return;
+  const adjustVolume = useCallback(
+    (delta: number) => {
+      if (!wavesurferRef.current) return;
 
-    const newVolume = Math.max(0, Math.min(1, state.volume + delta));
-    wavesurferRef.current.setVolume(newVolume);
-    setState(prev => ({ ...prev, volume: newVolume, isMuted: newVolume === 0 }));
-  }, [state.volume]);
+      const newVolume = Math.max(0, Math.min(1, state.volume + delta));
+      wavesurferRef.current.setVolume(newVolume);
+      setState(prev => ({
+        ...prev,
+        volume: newVolume,
+        isMuted: newVolume === 0,
+      }));
+    },
+    [state.volume]
+  );
 
   const toggleMute = useCallback(() => {
     if (!wavesurferRef.current) return;
@@ -313,14 +341,18 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
       {/* Track Info */}
       <div className="flex items-center space-x-4 mb-6">
         {coverUrl && (
-          <img
+          <Image
             src={coverUrl}
             alt={`${title} cover`}
+            width={64}
+            height={64}
             className="w-16 h-16 rounded-lg object-cover shadow-sm"
           />
         )}
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-900 truncate">{title}</h3>
+          <h3 className="text-lg font-semibold text-gray-900 truncate">
+            {title}
+          </h3>
           <p className="text-gray-600 truncate">{artist}</p>
         </div>
       </div>
@@ -410,14 +442,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
             max="1"
             step="0.05"
             value={state.isMuted ? 0 : state.volume}
-            onChange={(e) => {
+            onChange={e => {
               const newVolume = parseFloat(e.target.value);
               if (wavesurferRef.current) {
                 wavesurferRef.current.setVolume(newVolume);
                 setState(prev => ({
                   ...prev,
                   volume: newVolume,
-                  isMuted: newVolume === 0
+                  isMuted: newVolume === 0,
                 }));
               }
             }}
@@ -429,7 +461,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
       {/* Keyboard Shortcuts Help */}
       <div className="mt-4 text-xs text-gray-500">
-        <p>Keyboard shortcuts: Space (play/pause), ←/→ (seek), ↑/↓ (volume), M (mute)</p>
+        <p>
+          Keyboard shortcuts: Space (play/pause), ←/→ (seek), ↑/↓ (volume), M
+          (mute)
+        </p>
       </div>
     </div>
   );

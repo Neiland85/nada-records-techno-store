@@ -8,10 +8,7 @@ export async function POST(request: NextRequest) {
     const albumId = formData.get('albumId') as string;
 
     if (!file) {
-      return NextResponse.json(
-        { error: 'No file provided' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
     if (!albumId) {
@@ -22,7 +19,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Validar tipo de archivo
-    const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/aac', 'audio/ogg'];
+    const allowedTypes = [
+      'audio/mpeg',
+      'audio/wav',
+      'audio/flac',
+      'audio/aac',
+      'audio/ogg',
+    ];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
         { error: 'Invalid file type. Only audio files are allowed.' },
@@ -54,9 +57,8 @@ export async function POST(request: NextRequest) {
       fileUrl: blob.url,
       fileSize: file.size,
       filename: file.name,
-      message: 'File uploaded successfully'
+      message: 'File uploaded successfully',
     });
-
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json(

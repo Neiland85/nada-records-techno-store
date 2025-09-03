@@ -90,7 +90,7 @@ export function AudioUploadForm({
         setUploadProgress(0);
       }
     },
-    [albumId, onSuccess, onError, onStart],
+    [albumId, onSuccess, onError, onStart]
   );
 
   const onDrop = useCallback(
@@ -117,7 +117,7 @@ export function AudioUploadForm({
       setUploadedFile(file);
       await uploadFile(file);
     },
-    [onError, uploadFile],
+    [onError, uploadFile]
   );
 
   const removeFile = () => {
@@ -141,7 +141,8 @@ export function AudioUploadForm({
             Subir Archivo de Audio
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Arrastra y suelta tu archivo de audio aquí, o haz click para seleccionar
+            Arrastra y suelta tu archivo de audio aquí, o haz click para
+            seleccionar
           </p>
         </div>
 

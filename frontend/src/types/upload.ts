@@ -94,7 +94,13 @@ export type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 // Constantes de configuración
 export const DEFAULT_UPLOAD_CONFIG: UploadConfig = {
   maxFileSize: 500 * 1024 * 1024, // 500MB
-  acceptedFormats: ['audio/mpeg', 'audio/wav', 'audio/flac', 'audio/aac', 'audio/ogg'],
+  acceptedFormats: [
+    'audio/mpeg',
+    'audio/wav',
+    'audio/flac',
+    'audio/aac',
+    'audio/ogg',
+  ],
   chunkSize: 1024 * 1024, // 1MB chunks
   retryAttempts: 3,
   timeout: 30000, // 30 seconds
