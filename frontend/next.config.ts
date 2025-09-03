@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
   // Enable experimental features for better performance
@@ -57,6 +58,12 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
     }
+
+    // Add path aliases
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, './src'),
+    };
 
     // Handle audio files
     config.module.rules.push({
