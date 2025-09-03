@@ -1,13 +1,5 @@
 {
   "packageManager": "npm",
-  "functions": {
-    "src/app/api/**/*.js": {
-      "runtime": "@vercel/node"
-    },
-    "src/app/api/**/*.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",

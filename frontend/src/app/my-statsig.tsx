@@ -1,20 +1,42 @@
 "use client";
 
-import { StatsigProvider, useClientAsyncInit } from '@statsig/react-bindings';
-import { StatsigSessionReplayPlugin } from '@statsig/session-replay';
-import { StatsigAutoCapturePlugin } from '@statsig/web-analytics';
-import React from "react";
+import React, { createContext, useContext } from "react";
 
+// Definir tipos para Statsig
+interface StatsigClient {
+  logEvent: (eventName: string, metadata?: Record<string, string | number | boolean>) => void;
+  checkGate: (gateName: string) => boolean;
+}
+
+interface StatsigContextType {
+  client: StatsigClient | null;
+}
+
+// Crear un contexto simple para Statsig
+const StatsigContext = createContext<StatsigContextType | null>(null);
+
+// Hook personalizado para usar Statsig
+export const useStatsigClient = () => {
+  const context = useContext(StatsigContext);
+  return context || { client: null };
+};
+
+// Componente de provider simplificado
 export default function MyStatsig({ children }: { children: React.ReactNode }) {
-  const { client } = useClientAsyncInit(
-    process.env.NEXT_PUBLIC_STATSIG_CLIENT_KEY || "client-HThka8vok18ZKXK4qBGKUrm3cW4fFPjvApFjEoK41eg",
-    { userID: 'a-user' },
-    { plugins: [new StatsigAutoCapturePlugin(), new StatsigSessionReplayPlugin()] },
-  );
+  // Cliente mock para desarrollo
+  const mockClient: StatsigClient = {
+    logEvent: (eventName: string, metadata?: Record<string, string | number | boolean>) => {
+      console.log('Statsig Event:', eventName, metadata);
+    },
+    checkGate: (gateName: string) => {
+      console.log('Statsig Gate Check:', gateName);
+      return false;
+    }
+  };
 
   return (
-    <StatsigProvider client={client} loadingComponent={<div>Loading...</div>}>
+    <StatsigContext.Provider value={{ client: mockClient }}>
       {children}
-    </StatsigProvider>
+    </StatsigContext.Provider>
   );
 }
