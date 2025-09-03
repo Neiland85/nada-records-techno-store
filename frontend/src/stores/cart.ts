@@ -196,6 +196,7 @@ export const useCartStore = create<CartStore>()(
         discountCode: state.discountCode,
         discountAmount: state.discountAmount,
       }),
+      skipHydration: true,
     }
   )
 );

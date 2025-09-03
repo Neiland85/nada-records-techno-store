@@ -278,6 +278,7 @@ export const useAudioPlayerStore = create<AudioPlayerStore>()(
         shuffleMode: state.shuffleMode,
         autoPlay: state.autoPlay,
       }),
+      skipHydration: true,
     }
   )
 );

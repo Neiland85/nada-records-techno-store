@@ -254,6 +254,7 @@ export const useUIStore = create<UIStore>()(
         sidebarOpen: state.sidebarOpen,
         playerExpanded: state.playerExpanded,
       }),
+      skipHydration: true,
     }
   )
 );
