@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy to Vercel (Manual)
 
 on:
   push:
@@ -14,8 +14,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Ejecutar en main (producción), develop (desarrollo) o en ramas feature (preview)
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/feature/')
+    # Solo ejecutar si NO hay un commit de bot de Vercel
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || (startsWith(github.ref, 'refs/heads/feature/') && !contains(github.actor, 'vercel'))
+    # Evitar ejecuciones concurrentes
+    concurrency:
+      group: vercel-deploy-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
     - name: Checkout code
@@ -67,6 +71,11 @@ jobs:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    - name: Disable auto-deployments temporarily
+      run: |
+        echo "Manual deployment in progress - auto-deployments disabled"
+        # This helps prevent conflicts with Vercel's automatic deployments
 
     - name: Deploy to Vercel (Preview)
       if: github.ref != 'refs/heads/main'
