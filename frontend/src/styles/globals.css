@@ -1,0 +1,137 @@
+/* Estilos globales para Nada Records Techno Store */
+
+/* Variables CSS personalizadas para el tema techno */
+:root {
+  --techno-primary: #ff006e;
+  --techno-secondary: #8338ec;
+  --techno-accent: #3a86ff;
+  --techno-dark: #0a0a0a;
+  --techno-darker: #000000;
+  --techno-light: #ffffff;
+  --techno-gray: #333333;
+  --techno-gray-light: #666666;
+}
+
+/* Tema oscuro personalizado */
+.dark {
+  --techno-primary: #ff006e;
+  --techno-secondary: #8338ec;
+  --techno-accent: #3a86ff;
+  --techno-dark: #0a0a0a;
+  --techno-darker: #000000;
+  --techno-light: #ffffff;
+  --techno-gray: #cccccc;
+  --techno-gray-light: #999999;
+}
+
+/* Utilidades para animaciones techno */
+@keyframes pulse-techno {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--techno-primary);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--techno-primary), 0 0 30px var(--techno-primary);
+  }
+}
+
+.animate-pulse-techno {
+  animation: pulse-techno 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Estilos para el audio player */
+.audio-waveform {
+  background: linear-gradient(45deg, var(--techno-primary), var(--techno-secondary));
+  border-radius: 4px;
+}
+
+.audio-controls {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--techno-primary);
+}
+
+/* Estilos para botones interactivos */
+.btn-techno {
+  background: linear-gradient(45deg, var(--techno-primary), var(--techno-secondary));
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-techno:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 0, 110, 0.3);
+}
+
+.btn-techno:active {
+  transform: translateY(0);
+}
+
+/* Estilos para inputs y formularios */
+.input-techno {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--techno-gray);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--techno-light);
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.input-techno:focus {
+  outline: none;
+  border-color: var(--techno-primary);
+  box-shadow: 0 0 0 3px rgba(255, 0, 110, 0.2);
+}
+
+.input-techno::placeholder {
+  color: var(--techno-gray-light);
+}
+
+/* Estilos para cards y contenedores */
+.card-techno {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.card-techno:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 0, 110, 0.3);
+  transform: translateY(-4px);
+}
+
+/* Utilidades responsive */
+@media (max-width: 768px) {
+  .card-techno {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .btn-techno {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
