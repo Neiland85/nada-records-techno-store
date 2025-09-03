@@ -1,15 +1,25 @@
 'use client';
 
+import { useAuthStore, useCartStore, useUIStore } from '@/stores';
 import { AudioLines, Menu, Search, ShoppingCart, User, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { CartDrawer } from '../ui/CartDrawer';
+import { SearchBar } from '../ui/SearchBar';
 
 interface HeaderProps {
   className?: string;
 }
 
 export function Header({ className = '' }: HeaderProps) {
+  // Estado local para menú móvil (temporal, luego migraremos a UI store)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Zustand stores
+  const cartItemCount = useCartStore((state) => state.totalItems);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const user = useAuthStore((state) => state.user);
+  const { toggleSearch } = useUIStore();
 
   return (
     <header className={`bg-black/90 backdrop-blur-lg border-b border-techno-primary/20 ${className}`}>
@@ -39,15 +49,29 @@ export function Header({ className = '' }: HeaderProps) {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">
-            <button className="text-gray-300 hover:text-techno-primary transition-colors">
+            <button
+              onClick={toggleSearch}
+              className="text-gray-300 hover:text-techno-primary transition-colors"
+            >
               <Search className="w-5 h-5" />
             </button>
-            <button className="text-gray-300 hover:text-techno-primary transition-colors">
+            <button
+              onClick={() => useCartStore.getState().openCart()}
+              className="text-gray-300 hover:text-techno-primary transition-colors relative"
+            >
               <ShoppingCart className="w-5 h-5" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-techno-primary text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItemCount > 99 ? '99+' : cartItemCount}
+                </span>
+              )}
             </button>
-            <button className="text-gray-300 hover:text-techno-primary transition-colors">
+            <Link
+              href={isAuthenticated ? "/dashboard" : "/auth"}
+              className="text-gray-300 hover:text-techno-primary transition-colors"
+            >
               <User className="w-5 h-5" />
-            </button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <button
@@ -91,10 +115,34 @@ export function Header({ className = '' }: HeaderProps) {
               >
                 Sobre
               </Link>
+
+              {/* User section in mobile menu */}
+              {isAuthenticated && user && (
+                <>
+                  <div className="border-t border-techno-primary/20 pt-4 mt-4">
+                    <div className="text-sm text-gray-400 mb-2">
+                      Hola, {user.name}
+                    </div>
+                    <Link
+                      href="/dashboard"
+                      className="text-gray-300 hover:text-techno-primary transition-colors block"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </nav>
         )}
       </div>
+
+      {/* Search Bar */}
+      <SearchBar />
+
+      {/* Cart Drawer */}
+      <CartDrawer />
     </header>
   );
 }
