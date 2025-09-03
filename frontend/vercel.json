@@ -1,8 +1,11 @@
 {
   "packageManager": "npm",
   "functions": {
-    "src/pages/api/**/*.js": {
-      "runtime": "nodejs18.x"
+    "src/app/api/**/*.js": {
+      "runtime": "@vercel/node"
+    },
+    "src/app/api/**/*.ts": {
+      "runtime": "@vercel/node"
     }
   },
   "headers": [

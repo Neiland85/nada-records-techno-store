@@ -29,6 +29,11 @@
     "url": "https://github.com/Neiland85/nada-records-techno-store.git"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.5.0"
+    "@flags-sdk/statsig": "^0.2.2",
+    "@statsig/react-bindings": "^3.24.4",
+    "@statsig/session-replay": "^3.24.4",
+    "@statsig/web-analytics": "^3.24.4",
+    "@vercel/analytics": "^1.5.0",
+    "flags": "^4.0.1"
   }
 }
