@@ -4,6 +4,7 @@ param resourceGroupName string
 param resourceToken string = uniqueString(subscription().id, resourceGroup().id, location, environmentName)
 param resourcePrefix string = 'nts'
 param databaseAdminLogin string
+@secure()
 param databaseAdminPassword string
 param stripeSecretKey string
 param stripePublishableKey string

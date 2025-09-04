@@ -1,0 +1,32 @@
+# Elite Audit System - Independent Files
+# These files are for audit analysis only and don't affect main application
+
+# Audit output files
+audit_output/
+.audit_temp/
+*.audit.log
+
+# Audit environment (independent)
+audit_env/
+
+# Generated audit reports (commit to track progress)
+# metrics.json - KEEP for tracking
+# AUDIT_REPORT.md - KEEP for documentation
+
+# Temporary analysis files
+coverage.xml
+htmlcov/
+.pytest_cache/
+__pycache__/
+*.pyc
+
+# OS and editor files
+.DS_Store
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# Audit-specific temporary files
+.audit_cache/
+audit_*.tmp

@@ -1,0 +1,152 @@
+{
+  "generated_at": "2025-09-04T01:36:49.692879+00:00",
+  "analysis_window": 90,
+  "project_metrics": {
+    "window_days": 90,
+    "commits_total": 59,
+    "commits_per_week": 4.59,
+    "avg_gap_hours": 11.56,
+    "authors_top": [
+      [
+        "Neil Munoz",
+        39
+      ],
+      [
+        "Neiland85",
+        18
+      ],
+      [
+        "dependabot[bot]",
+        1
+      ],
+      [
+        "Cursor Agent",
+        1
+      ]
+    ],
+    "scope_counts": {
+      "frontend": 24,
+      "devops": 14,
+      "backend": 12,
+      "mixed": 4,
+      "documentation": 5
+    },
+    "added_lines": 22738,
+    "deleted_lines": 4851,
+    "hot_files": [
+      [
+        "frontend/package-lock.json",
+        11
+      ],
+      [
+        "frontend/package.json",
+        11
+      ],
+      [
+        "vercel.json",
+        11
+      ],
+      [
+        "backend/requirements.txt",
+        10
+      ],
+      [
+        ".github/workflows/deploy.yml",
+        9
+      ],
+      [
+        "frontend/tsconfig.json",
+        7
+      ],
+      [
+        "frontend/next.config.ts",
+        6
+      ],
+      [
+        "frontend/src/app/layout.tsx",
+        5
+      ],
+      [
+        "frontend/src/app/page.tsx",
+        5
+      ],
+      [
+        "frontend/src/components/audio/AudioPlayer.tsx",
+        5
+      ],
+      [
+        "frontend/vercel.json",
+        4
+      ],
+      [
+        "frontend/src/app/upload-example/page.tsx",
+        4
+      ],
+      [
+        "SECURITY_UPDATE.md",
+        4
+      ],
+      [
+        "backend/app/api/deps/auth.py",
+        4
+      ],
+      [
+        "package.json",
+        3
+      ]
+    ]
+  },
+  "dora_metrics": {
+    "deployment_frequency_weekly": 4.59,
+    "lead_time_hours": 11.56,
+    "change_failure_rate_percent": 49.15
+  },
+  "regional_benchmarks": {
+    "SP": {
+      "commits_wk": 10.0,
+      "time_between_h": 12.0,
+      "lead_time_h": 24.0,
+      "deploy_freq_wk": 5.0
+    },
+    "EU": {
+      "commits_wk": 11.0,
+      "time_between_h": 11.0,
+      "lead_time_h": 20.0,
+      "deploy_freq_wk": 6.0
+    },
+    "US": {
+      "commits_wk": 12.0,
+      "time_between_h": 10.0,
+      "lead_time_h": 18.0,
+      "deploy_freq_wk": 8.0
+    }
+  },
+  "regional_comparisons": {
+    "SP": {
+      "commits_wk_delta": -5.41,
+      "time_between_delta_h": -0.44,
+      "lead_time_delta_h": -12.44,
+      "deploy_freq_delta_wk": -0.41,
+      "performance_vs_region": 79.2
+    },
+    "EU": {
+      "commits_wk_delta": -6.41,
+      "time_between_delta_h": 0.56,
+      "lead_time_delta_h": -8.44,
+      "deploy_freq_delta_wk": -1.41,
+      "performance_vs_region": 71.0
+    },
+    "US": {
+      "commits_wk_delta": -7.41,
+      "time_between_delta_h": 1.56,
+      "lead_time_delta_h": -6.44,
+      "deploy_freq_delta_wk": -3.41,
+      "performance_vs_region": 60.0
+    }
+  },
+  "overall_performance": {
+    "score": 70.1,
+    "assessment": "\ud83d\udcc8 Good (Top 50%)",
+    "global_ranking": "Top 30%"
+  }
+}
