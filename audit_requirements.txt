@@ -1,0 +1,34 @@
+# 🚀 Elite Audit System - Independent Dependencies
+# These are ONLY for the audit system, completely separate from main application
+
+# Core audit dependencies (minimal, no conflicts)
+GitPython==3.1.40
+requests==2.31.0
+python-dateutil==2.8.2
+
+# Analysis and metrics
+matplotlib==3.7.3
+numpy==1.24.4
+pandas==2.0.3
+
+# Report generation
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+
+# Optional: Enhanced analysis (if needed)
+# scipy==1.11.3
+# seaborn==0.12.2
+
+# Development tools (audit-specific)
+black==23.9.1
+mypy==1.6.1
+ruff==0.1.0
+bandit[toml]==1.7.5
+
+# Testing framework (audit tests only)
+pytest==7.4.2
+pytest-cov==4.1.0
+coverage==7.3.2
+
+# No web frameworks, no FastAPI, no Next.js dependencies
+# This ensures zero interference with main application
