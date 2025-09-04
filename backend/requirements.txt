@@ -28,7 +28,7 @@ stripe==7.5.0
 
 # Cloud storage
 azure-storage-blob==12.19.0
-azure-identity==1.15.0
+azure-identity==1.16.1
 
 # Audio processing
 ffmpeg-python==0.2.0
